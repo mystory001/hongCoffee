@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:security="http://www.springframework.org/schema/security"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security.xsd">
+
+<bean id="customAccessDenied" class="com.itwillbs.security.CustomAccessDeniedHandler"></bean>
+<bean id="customLoginSuccess" class="com.itwillbs.security.CustomLoginSuccessHandler"></bean>
+<bean id="bcryptPasswordEncoder" class="org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder"></bean>
+
+<security:http>
+
+	<security:intercept-url pattern="/emp/login" access="permitAll"/>
+	<security:intercept-url pattern="/emp/**" access="hasAnyRole('ROLE_ADMIN', 'ROLE_MEMBER')"/>
+	<security:intercept-url pattern="/store/login" access="permitAll"/>
+	<security:intercept-url pattern="/store/**" access="hasRole('ROLE_USER')"/>
+
+	<security:form-login login-page="/emp/login"
+						 username-parameter="emp_num"
+						 password-parameter="emp_pw"
+						 authentication-success-handler-ref="customLoginSuccess"/>
+						 
+						 
+	<security:form-login login-page="/store/login"
+						 username-parameter="num"
+						 password-parameter="pw"
+						 authentication-success-handler-ref="customLoginSuccess"/>					 
+	 
+	<security:logout logout-url="/emp/logout" invalidate-session="true"/>	
+	
+	<security:logout logout-url="/store/logout" invalidate-session="true"/>						 
+
+	<security:access-denied-handler ref="customAccessDenied"/>
+						
+</security:http>
+
+
+<security:authentication-manager>
+
+	<security:authentication-provider>
+
+<!-- 		<security:password-encoder ref="customPasswordEncoder"/> -->
+				
+		<security:jdbc-user-service data-source-ref="dataSource" 
+		users-by-username-query="select emp_num, emp_pw, emp_state, emp_right from employee where emp_num = ? "
+		authorities-by-username-query="select emp_num, auth from auth where emp_num = ? "/>
+		
+<!-- 		<security:jdbc-user-service data-source-ref="dataSource"  -->
+<!-- 		users-by-username-query="select num, pw, state from store where num = ? " -->
+<!-- 		authorities-by-username-query="select num, auth from auth where num = ? "/> -->
+			
+		<security:password-encoder ref="bcryptPasswordEncoder"/>
+
+	</security:authentication-provider>
+
+</security:authentication-manager>
+
+
+</beans>

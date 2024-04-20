@@ -1,0 +1,522 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+<!-- namespace="com.itwillbs.mappers.boardMapper"  -->
+<!--        => boardMapper 파일 => xml 파일이름  -->
+<mapper namespace="com.itwillbs.mappers.EmpMapper">
+
+	<select id="userCheck" resultType="com.itwillbs.domain.EmployeeDTO">
+		select * from employee
+		where emp_num = #{emp_num} and emp_pw = #{emp_pw}
+	</select>
+
+	<select id="getStoreList" resultType="com.itwillbs.domain.StoreDTO"> 
+ 		select * from store
+ 		order by num desc
+ 		limit #{startRow},#{pageSize} 
+ 		
+ 	</select>
+ 	
+
+ 	<select id="searchStoreList" resultType="com.itwillbs.domain.StoreDTO">
+ 		select * from store 
+ 	
+ 		<where>
+ 		<if test="name != ''">
+ 			name like concat ('%', #{name}, '%')
+ 		</if>
+ 		<if test="boss != ''">
+ 			and boss like concat ('%', #{boss}, '%')
+ 		</if>
+ 		<if test="address != ''">
+			and address like concat ('%', #{address}, '%')
+ 		</if>
+ 		<if test="phone != ''">
+ 			and phone like concat ('%', #{phone}, '%')
+ 		</if>
+ 		<if test="state != 100">
+ 			and state = #{state}
+ 		</if>
+ 		</where>
+ 		order by num desc
+ 		limit #{startRow},#{pageSize}
+ 	</select>
+ 	
+
+ 	<select id="getItemList" resultType="com.itwillbs.domain.ItemDTO"> 
+ 		select * from item 
+ 		order by item_state, item_type, item_num
+ 		limit #{startRow},#{pageSize}
+ 	</select>
+ 	
+ 	<select id="searchItemList" resultType="com.itwillbs.domain.ItemDTO">
+		select * from item
+		<where>
+		<if test="item_type != 100">
+			item_type = #{item_type}
+			<if test="item_name != null">
+				and item_name like concat('%', #{item_name}, '%')
+			</if>
+			<if test="item_maxPrice != 0">
+				and item_price between #{item_minPrice} and #{item_maxPrice}
+			</if>
+			<if test="item_minPrice != 0 and item_maxPrice == 0">
+				and item_price >= #{item_minPrice}
+			</if>
+		</if>
+		<if test="item_type == 100">
+			<if test="item_name != null">
+				item_name like concat('%', #{item_name}, '%')
+			</if>
+			<if test="item_maxPrice != 0">
+				and item_price between #{item_minPrice} and #{item_maxPrice}
+			</if>
+			<if test="item_minPrice != 0 and item_maxPrice == 0">
+				and item_price >= #{item_minPrice}
+			</if>
+		</if>
+		</where>
+		order by item_state, item_type, item_num
+ 		limit #{startRow},#{pageSize}
+	</select>
+ 	
+ 	<select id="getOrderList" resultType="com.itwillbs.domain.OrderDTO"> 
+ 		select o.od_num, s.name, i.item_name, i.item_price, o.od_amount, o.od_time, o.received_not, o.od_num, o.shipment_not, o.od_note, o.ob_note  
+ 		from `order` o join store s on o.num = s.num 
+ 		join item i on o.item_num = i.item_num
+ 		order by o.shipment_not, o.od_time
+ 		limit #{startRow},#{pageSize}
+ 	</select>
+ 	
+ 	<select id="getOrderListEx" resultType="com.itwillbs.domain.OrderDTO"> 
+ 		select o.od_num, s.name, i.item_name, i.item_price, o.od_amount, o.od_time, o.shipment_not, o.od_note, o.ob_note  
+ 		from `order` o join store s on o.num = s.num 
+ 		join item i on o.item_num = i.item_num
+ 		order by o.shipment_not, o.od_time
+ 	</select>
+ 	
+ 	<select id="searchOrderList" resultType="com.itwillbs.domain.OrderDTO">
+ 		select o.od_num, s.name, i.item_name, i.item_price, o.od_amount, o.od_time, o.shipment_not, o.od_note, o.ob_note  
+ 		from `order` o join store s on o.num = s.num 
+ 		join item i on o.item_num = i.item_num
+ 		<where>
+ 			<if test="name != ''">
+     			s.name like concat('%', #{name}, '%')
+    		</if>
+    		<if test="item_name != ''">
+      			and i.item_name like concat('%', #{item_name}, '%')
+    		</if>
+    		<if test="item_maxPrice != 0">
+    			and i.item_price between #{item_minPrice} and #{item_maxPrice}
+    		</if>
+			<if test="item_minPrice != 0 and item_maxPrice == 0">
+				and i.item_price >= #{item_minPrice}
+			</if>
+    		<if test="od_maxTime != ''">
+      			and date(o.od_time) between #{od_minTime} and #{od_maxTime}
+    		</if>
+    		<if test="od_minTime != '' and od_maxTime == ''">
+				and date(o.od_time) >= #{od_minTime}
+			</if>
+    		<if test="shipment_not != 100">
+    			and o.shipment_not = #{shipment_not}
+    		</if>
+ 		</where>
+ 		order by o.shipment_not, o.od_time
+ 		limit #{startRow},#{pageSize}
+ 	</select>
+ 	
+ 	<select id="getShipmentList" resultType="com.itwillbs.domain.ShipmentDTO"> 
+ 		select  h.od_num, s.name, i.item_name, h.sh_amount, i.item_price, h.sh_time, r.pay, r.od_num, h.sh_note, o.received_not
+ 		from shipment h left join store s on h.num = s.num
+ 		left join item i on h.item_num = i.item_num
+ 		left join receive r on h.od_num = r.od_num
+ 		left join `order` o on h.od_num = o.od_num
+ 		order by o.received_not, h.sh_time
+		limit #{startRow},#{pageSize}
+ 	</select>
+ 	
+ 	<select id="getShipmentListEx" resultType="com.itwillbs.domain.ShipmentDTO"> 
+ 		select  h.od_num, s.name, i.item_name, h.sh_amount, i.item_price, h.sh_time, r.pay, r.od_num, h.sh_note, o.received_not
+ 		from shipment h left join store s on h.num = s.num
+ 		left join item i on h.item_num = i.item_num
+ 		left join receive r on h.od_num = r.od_num
+ 		left join `order` o on h.od_num = o.od_num
+ 		order by o.received_not, h.sh_time
+ 	</select>
+ 	
+ 	<select id="searchShipmentList" resultType="com.itwillbs.domain.ShipmentDTO">
+ 		select  h.od_num, s.name, i.item_name, h.sh_amount, i.item_price, h.sh_time, r.pay, h.sh_note, o.received_not
+ 		from shipment h left join store s on h.num = s.num
+ 		left join item i on h.item_num = i.item_num
+ 		left join receive r on h.od_num = r.od_num
+ 		left join `order` o on h.od_num = o.od_num
+ 		<where>
+ 			<if test="name != ''">
+     			s.name like concat('%', #{name}, '%')
+    		</if>
+    		<if test="item_name != ''">
+      			and i.item_name like concat('%', #{item_name}, '%')
+    		</if>
+    		<if test="item_maxPrice != 0">
+    			and i.item_price between #{item_minPrice} and #{item_maxPrice}
+    		</if>
+			<if test="item_minPrice != 0 and item_maxPrice == 0">
+				and i.item_price >= #{item_minPrice}
+			</if>
+    		<if test="sh_maxTime != ''">
+      			and date(h.sh_time) between #{sh_minTime} and #{sh_maxTime}
+    		</if>
+    		<if test="sh_minTime != '' and sh_maxTime == ''">
+				and date(h.sh_time) >= #{sh_minTime}
+			</if>
+			<if test="received_not != 100">
+    			and o.received_not = #{received_not}
+    		</if>
+ 		</where>
+ 		order by o.received_not, h.sh_time
+		limit #{startRow},#{pageSize}
+ 	</select>
+ 	
+ 	<select id="getEmpList" resultType="com.itwillbs.domain.EmployeeDTO"> 
+ 		select * from employee limit #{startRow},#{pageSize}
+ 	</select>
+ 	
+
+ 	<insert id="storeInsert">
+ 		insert into store(num, pw, name, boss, phone, tel, email, address, address_detail, postalcode, note, state)
+ 		values(#{num}, #{pw}, #{name}, #{boss}, #{phone}, #{tel}, #{email}, #{address}, #{address_detail}, #{postalcode},#{note}, #{state})
+ 	</insert>
+ 	
+ 	<update id="storeUpdate">
+ 		update store
+ 		set pw = #{pw}, boss = #{boss}, phone = #{phone}, email = #{email}, state = #{state}, note = #{note}
+ 		where num = #{num}
+ 	</update>
+ 	
+ 	<insert id="employeeInsert">
+ 		insert into employee(emp_num, emp_pw, emp_name, emp_phone, emp_email, emp_birth, emp_dept, emp_rank, emp_right, hire_date, emp_note)
+ 		values(#{emp_num}, #{emp_pw}, #{emp_name}, #{emp_phone}, #{emp_email}, #{emp_birth}, #{emp_dept}, #{emp_rank}, #{emp_right}, #{hire_date}, #{emp_note})
+ 	</insert>
+ 	
+<!--  	관리자가 변경 -->
+ 	<update id="employeeUpdate1">
+ 		update employee
+ 		set emp_pw = #{emp_pw}, emp_name = #{emp_name}, emp_birth = #{emp_birth}, emp_dept = #{emp_dept}, emp_rank = #{emp_rank}, emp_right = #{emp_right}, emp_phone = #{emp_phone}, emp_email = #{emp_email}, hire_date = #{hire_date}, emp_state = #{emp_state}, emp_note = #{emp_note}
+ 		where emp_num = #{emp_num}
+ 	</update>
+
+<!-- 	사원이 변경 	 -->
+ 	<update id="employeeUpdate">
+		update employee
+ 		set emp_pw = #{emp_pw}, emp_name = #{emp_name}, emp_phone = #{emp_phone}, emp_email = #{emp_email}
+ 		where emp_num = #{emp_num}
+ 	</update>
+ 	
+ 	
+ 	<select id="getStore" resultType="com.itwillbs.domain.StoreDTO">
+ 		select * from store
+ 		where num = #{num}
+ 	</select>
+ 	
+ 	<insert id="itemInsert">
+ 		insert into item(item_num, item_name, item_type, item_price, item_state, item_note)
+ 		values(#{item_num},#{item_name},#{item_type},#{item_price},#{item_state},#{item_note})
+ 	</insert>
+ 	
+ 	<select id="getItem" resultType="com.itwillbs.domain.ItemDTO">
+ 		select * from item
+ 		where item_num = #{item_num}
+ 	</select>
+ 	
+ 	<update id="itemUpdate">
+ 		update item
+ 		set item_name = #{item_name}, item_type = #{item_type}, item_price = #{item_price}, item_state = #{item_state}, item_note = #{item_note}
+ 		where item_num = #{item_num}
+ 	</update>
+ 	
+ 	<select id="getOrder" resultType="com.itwillbs.domain.OrderDTO">
+ 		select a.od_num, a.item_num, a.num, a.od_amount, a.received_not, a.od_note, a.ob_note, a.od_time, a.item_num, b.name, c.item_name, c.item_price, a.shipment_not
+ 		from `order` a join store b
+ 		on a.num = b.num
+ 		join item c
+ 		on a.item_num = c.item_num
+ 		where od_num = #{od_num}
+ 	</select>
+ 	
+ 	<update id="orderUpdate">
+		update `order` a join store b
+		on a.num = b.num
+		join item c
+		on a.item_num = c.item_num
+		set name = #{name}, item_name = #{item_name}, od_amount =#{od_amount}, received_not = #{received_not}, od_time = #{od_time}, ob_note = #{ob_note}
+		where od_num = #{od_num}
+ 	</update>
+ 	
+ 	<insert id="shipmentInsert">
+ 		insert into shipment
+ 		values (#{od_num}, #{num}, #{item_num}, #{sh_amount}, #{sh_time}, #{sh_note})
+ 	</insert>
+ 	
+ 	<update id="shipmentState">
+ 		update `order`
+ 		set shipment_not = 1
+ 		where od_num = #{od_num}
+ 	</update>
+ 	
+ 	<update id="shipmentUpdate">
+ 		update shipment
+ 		set sh_amount = #{sh_amount}, sh_time = #{sh_time}, sh_note = #{sh_note}
+ 		where od_num = #{od_num}
+ 	</update>
+ 	
+ 	<select id="getShipment" resultType="com.itwillbs.domain.ShipmentDTO">
+ 		select a.od_num, a.num, a.item_num, a.sh_amount, a.sh_time, a.sh_note, b.name, c.item_name, c.item_price, o.received_not
+ 		from shipment a join store b
+ 		on a.num = b.num
+ 		 join item c
+ 		on a.item_num = c.item_num
+ 		 join `order` o
+ 		on a.od_num = o.od_num
+ 		where a.od_num = #{od_num}
+ 	</select>
+ 	
+ 	<select id="getEmployee" resultType="com.itwillbs.domain.EmployeeDTO">
+ 		select * from employee
+ 		where emp_num = #{emp_num}
+</select>
+ 	<select id="searchEmpList" resultType="com.itwillbs.domain.EmployeeDTO"> 
+ 		select * from employee 
+ 		<where>
+ 			<if test="emp_dept != 100">
+     			emp_dept = #{emp_dept}
+    		</if>
+    		<if test="emp_rank != 100">
+      			and emp_rank = #{emp_rank}
+    		</if>
+    		<if test="emp_num != 0">
+      			and emp_num = #{emp_num}
+    		</if>
+    		<if test="emp_name != ''">
+    			and emp_name like concat('%', #{emp_name}, '%')
+    		</if>
+ 		</where>
+ 		limit #{startRow}, #{pageSize}
+ 	</select>
+ 	
+ 	<delete id="shipmentDelete">
+ 		delete from shipment
+ 		where od_num = #{od_num}
+ 	</delete>
+	
+	<select id="getStoreCountS" resultType="java.lang.Integer"> 
+ 		select count(*) from store  
+ 		<where>
+ 		<if test="name != ''">
+ 			name like concat ('%', #{name}, '%')
+ 		</if>
+ 		<if test="boss != ''">
+ 			and boss like concat ('%', #{boss}, '%')
+ 		</if>
+ 		<if test="address != ''">
+			and address like concat ('%', #{address}, '%')
+ 		</if>
+ 		<if test="phone != ''">
+ 			and phone like concat ('%', #{phone}, '%')
+ 		</if>
+ 		<if test="state != 100">
+ 			and state = #{state}
+ 		</if>
+ 		</where>
+ 	</select>
+ 	
+ 	<select id="getStoreCount" resultType="java.lang.Integer"> 
+ 		select count(*) from store  
+ 	</select>
+ 	
+ 	<select id="getItemCountI" resultType="java.lang.Integer"> 
+ 		select count(*) from item
+ 		<where>
+		<if test="item_type != 100">
+			item_type = #{item_type}
+			<if test="item_name != null">
+				and item_name like concat('%', #{item_name}, '%')
+			</if>
+			<if test="item_maxPrice != 0">
+				and item_price between #{item_minPrice} and #{item_maxPrice}
+			</if>
+			<if test="item_minPrice != 0 and item_maxPrice == 0">
+				and item_price >= #{item_minPrice}
+			</if>
+		</if>
+		<if test="item_type == 100">
+			<if test="item_name != null">
+				item_name like concat('%', #{item_name}, '%')
+			</if>
+			<if test="item_maxPrice != 0">
+				and item_price between #{item_minPrice} and #{item_maxPrice}
+			</if>
+			<if test="item_minPrice != 0 and item_maxPrice == 0">
+				and item_price >= #{item_minPrice}
+			</if>
+		</if>
+		</where>
+ 		
+ 	</select>
+ 	
+ 	<select id="getItemCount" resultType="java.lang.Integer"> 
+ 		select count(*) from item  
+ 	</select>
+ 	
+ 	
+ 	<select id="getOrderCount" resultType="java.lang.Integer"> 
+ 		select count(*) from `order`  
+ 	</select>
+ 	<select id="getOrderCountO" resultType="java.lang.Integer"> 
+ 		select count(*) from `order` o join store s on o.num = s.num
+ 		join item i on o.item_num = i.item_num
+ 		<where>
+ 			<if test="name != ''">
+     			s.name like concat('%', #{name}, '%')
+    		</if>
+    		<if test="item_name != ''">
+      			and i.item_name like concat('%', #{item_name}, '%')
+    		</if>
+    		<if test="item_maxPrice != 0">
+    			and i.item_price between #{item_minPrice} and #{item_maxPrice}
+    		</if>
+			<if test="item_minPrice != 0 and item_maxPrice == 0">
+				and i.item_price >= #{item_minPrice}
+			</if>
+    		<if test="od_maxTime != ''">
+      			and date(o.od_time) between #{od_minTime} and #{od_maxTime}
+    		</if>
+    		<if test="od_minTime != '' and od_maxTime == ''">
+				and date(o.od_time) >= #{od_minTime}
+			</if>
+    		<if test="shipment_not != 100">
+    			and o.shipment_not = #{shipment_not}
+    		</if>
+ 		</where>
+ 	</select>
+ 	
+ 	<select id="getReceiveCountR" resultType="java.lang.Integer"> 
+ 		select count(*) from receive r 
+ 		join `order` o on o.od_num = r.rc_amount
+ 		
+ 		<where>
+ 			<if test="name != ''">
+     			s.name like concat('%', #{name}, '%')
+    		</if>
+    		<if test="item_name != ''">
+      			and i.item_name like concat('%', #{item_name}, '%')
+    		</if>
+    		<if test="item_maxPrice != 0">
+    			and i.item_price between #{item_minPrice} and #{item_maxPrice}
+    		</if>
+			<if test="item_minPrice != 0 and item_maxPrice == 0">
+				and i.item_price >= #{item_minPrice}
+			</if>
+    		<if test="od_time != null">
+      			and date(o.od_time) = #{od_time}
+    		</if>
+    		<if test="received_not != 100">
+    			and o.received_not = #{received_not}
+    		</if>
+ 		</where>
+ 		
+ 	</select>
+ 	
+ 	
+ 	
+ 	<select id="getShipmentCount" resultType="java.lang.Integer"> 
+ 		select count(*) from  shipment 
+ 	</select>
+ 	
+ 	<select id="getShipmentCountS" resultType="java.lang.Integer"> 
+ 		select count(*)
+		from shipment h left join store s on h.num = s.num
+ 		left join item i on h.item_num = i.item_num
+ 		left join receive r on h.od_num = r.od_num
+ 		left join `order` o on h.od_num = o.od_num
+ 		<where>
+ 			<if test="name != ''">
+     			s.name like concat('%', #{name}, '%')
+    		</if>
+    		<if test="item_name != ''">
+      			and i.item_name like concat('%', #{item_name}, '%')
+    		</if>
+    		<if test="item_maxPrice != 0">
+    			and i.item_price between #{item_minPrice} and #{item_maxPrice}
+    		</if>
+			<if test="item_minPrice != 0 and item_maxPrice == 0">
+				and i.item_price >= #{item_minPrice}
+			</if>
+    		<if test="sh_maxTime != ''">
+      			and date(h.sh_time) between #{sh_minTime} and #{sh_maxTime}
+    		</if>
+    		<if test="sh_minTime != '' and sh_maxTime == ''">
+				and date(h.sh_time) >= #{sh_minTime}
+			</if>
+			<if test="received_not != 100">
+    			and o.received_not = #{received_not}
+    		</if>
+ 		</where>
+ 	</select>
+ 	
+ 	<select id="getEmployeeCountE" resultType="java.lang.Integer"> 
+ 		select count(*) from employee
+ 		<where>
+ 			<if test="emp_dept != 100">
+     			emp_dept = #{emp_dept}
+    		</if>
+    		<if test="emp_rank != 100">
+      			and emp_rank = #{emp_rank}
+    		</if>
+    		<if test="emp_num != 0">
+      			and emp_num = #{emp_num}
+    		</if>
+    		<if test="emp_name != ''">
+    			and emp_name like concat('%', #{emp_name}, '%')
+    		</if>
+ 		</where>
+ 	</select>
+ 	
+    <select id="getEmployeeCount" resultType="java.lang.Integer"> 
+ 		select count(*) from  employee 
+ 	</select>
+
+
+    <select id="getTop5" resultType="com.itwillbs.domain.SalesDTO">
+ 		select s.name, sum((r.sales*p.prod_price)) "maechul"
+		from result r left join product p
+		on r.prod_num = p.prod_num
+		left join store s on r.num = s.num
+		where date(r.rs_date) = date_sub(CURDATE(), INTERVAL 1 DAY)
+		group by s.name
+		order by 2 desc
+		limit 5
+		
+<!--  		select s.name, format(sum(r.sales*p.prod_price),0) "maechul" -->
+<!-- 		from result r left join product p -->
+<!-- 		on r.prod_num = p.prod_num -->
+<!-- 		left join store s on r.num = s.num -->
+<!-- 		where r.rs_date = DATE_SUB('2024-03-21', INTERVAL 1 DAY) -->
+<!-- 		group by s.name -->
+<!-- 		order by 2 desc -->
+<!-- 		limit 5 -->
+		
+ 	</select>
+ 	
+ 	<update id="shipmentStateReset">
+ 		update `order`
+ 		set shipment_not = 0
+ 		where od_num = #{od_num}
+ 	</update>
+ 	
+ 	
+ 	
+
+</mapper>

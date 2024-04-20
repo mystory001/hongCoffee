@@ -1,0 +1,650 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+<!-- namespace="com.itwillbs.mappers.boardMapper"  -->
+<!--        => boardMapper 파일 => xml 파일이름  -->
+<mapper namespace="com.itwillbs.mappers.StoreMapper">
+
+
+	<select id="userCheck" resultType="com.itwillbs.domain.StoreDTO">
+		select * from store
+		where num = #{num} and pw = #{pw}
+	</select>
+	
+	
+	<select id="getItemList" resultType="com.itwillbs.domain.ItemDTO"> 
+ 		select item_num, item_name, item_type, item_price, item_state, item_note
+ 		from item
+ 		order by item_state, item_type, item_num
+ 		limit #{startRow}, #{pageSize}
+ 	</select>
+ 	
+ 	
+ 	<select id="searchItemList" resultType="com.itwillbs.domain.ItemDTO">
+		select item_num, item_name, item_type, item_price, item_state, item_note from item
+		<where>
+			<if test="item_type != 100">
+				item_type = #{item_type}
+			</if>
+			<if test="item_name != null">
+				and item_name like concat('%', #{item_name}, '%')
+			</if>
+			<if test="item_maxPrice != 0">
+				and item_price between #{item_minPrice} and #{item_maxPrice}
+			</if>
+			<if test="item_minPrice != 0 and item_maxPrice == 0">
+				and item_price >= #{item_minPrice}
+			</if>
+			<if test="item_state != 100">
+				and item_state = #{item_state}
+			</if>
+		</where>
+		order by item_state, item_type, item_num
+		limit #{startRow}, #{pageSize}
+	</select>
+
+
+	<select id="getStockList" resultType="com.itwillbs.domain.StockDTO"> 
+ 		select s.stock_num, t.item_type, t.item_name, t.item_price, s.amount, t.item_state
+ 		from stock s join item t on s.item_num = t.item_num
+ 		where s.num = #{num}
+ 		order by t.item_state, t.item_type, t.item_num
+ 		limit #{startRow},#{pageSize}
+ 	</select>
+ 	
+ 	
+ 	<select id="searchStockList" resultType="com.itwillbs.domain.StockDTO">
+		select s.stock_num, t.item_type, t.item_name, t.item_price, s.amount, t.item_state
+ 		from stock s join item t on s.item_num = t.item_num
+		<where>
+			s.num = #{num}
+			<if test="item_type != 100">
+				and t.item_type = #{item_type}
+			</if>	
+			<if test="item_maxPrice != 0">
+    			and t.item_price between #{item_minPrice} and #{item_maxPrice}
+    		</if>
+			<if test="item_minPrice != 0 and item_maxPrice == 0">
+				and t.item_price >= #{item_minPrice}
+			</if>
+			<if test="item_name != ''">
+				and t.item_name like concat('%', #{item_name}, '%')
+			</if>
+			<if test="amount_max != 0">
+    			and s.amount between #{amount_min} and #{amount_max}
+    		</if>
+			<if test="amount_min != 0 and amount_max == 0">
+				and s.amount >= #{amount_min}
+			</if>
+		</where>
+		order by t.item_state, t.item_type, t.item_num
+		limit #{startRow}, #{pageSize}
+	</select>
+
+
+	<select id="getOrderList" resultType="com.itwillbs.domain.OrderDTO"> 
+ 		select o.od_num,t.item_name, o.od_amount, t.item_price, o.od_time, o.shipment_not, o.received_not, s.name 
+ 		from `order` o join item t on o.item_num = t.item_num
+ 		join store s on o.num = s.num
+ 		where o.num = #{num}
+ 		order by o.shipment_not, o.received_not, o.od_time desc
+ 		limit #{startRow}, #{pageSize}
+ 	</select>
+ 	
+ 	
+ 	<select id="searchOrderList" resultType="com.itwillbs.domain.OrderDTO">
+ 		select o.od_num,t.item_name, o.od_amount, t.item_price, o.od_time, o.shipment_not, o.received_not, s.name 
+ 		from `order` o join item t on o.item_num = t.item_num
+ 		join store s on o.num = s.num
+ 		<where>
+ 			o.num = #{num}
+ 			<if test="item_name != ''">
+     			and t.item_name like concat('%', #{item_name}, '%')
+    		</if>
+    		<if test="item_maxPrice != 0">
+    			and t.item_price between #{item_minPrice} and #{item_maxPrice}
+    		</if>
+			<if test="item_minPrice != 0 and item_maxPrice == 0">
+				and t.item_price >= #{item_minPrice}
+			</if>
+    		<if test="od_maxTime != ''">
+    			and o.od_time between #{od_minTime} and #{od_maxTime}
+    		</if>
+			<if test="od_minTime != '' and od_maxTime == ''">
+				and o.od_time >= #{od_minTime}
+			</if>
+    		<if test="received_not != 100">
+    			and o.received_not = #{received_not}
+    		</if>
+ 		</where>
+ 		order by o.shipment_not, o.received_not, o.od_time desc
+ 		limit #{startRow}, #{pageSize}
+ 	</select>
+ 	
+ 	
+ 	<select id="getReceiveList" resultType="com.itwillbs.domain.ReceiveDTO"> 
+		select r.od_num, t.item_name, r.rc_amount, t.item_price, r.rc_time, r.pay
+		from receive r join item t on r.item_num = t.item_num
+		where r.num = #{num}
+		order by r.rc_time desc
+		limit #{startRow},#{pageSize}
+ 	</select>
+ 	
+ 	
+ 	<select id="searchReceiveList" resultType="com.itwillbs.domain.ReceiveDTO">
+  		select r.od_num, t.item_name, r.rc_amount, t.item_price, r.rc_time, r.pay
+  		from receive r join item t on r.item_num = t.item_num
+  		<where>
+  			r.num = #{num}
+    		<if test="item_name != ''">
+     			and t.item_name like concat('%', #{item_name}, '%')
+    		</if>
+    		<if test="item_maxPrice != 0">
+    			and t.item_price between #{item_minPrice} and #{item_maxPrice}
+    		</if>
+			<if test="item_minPrice != 0 and item_maxPrice == 0">
+				and t.item_price >= #{item_minPrice}
+			</if>
+    		<if test="rc_maxTime != ''">
+      			and date(r.rc_time) between #{rc_minTime} and #{rc_maxTime}
+    		</if>
+    		<if test="rc_minTime != '' and rc_maxTime == ''">
+      			and date(r.rc_time) >= #{rc_minTime}
+    		</if>
+    		<if test="pay != 100">
+    			and r.pay = #{pay}
+    		</if>
+  		</where>
+  		order by r.rc_time desc
+		limit #{startRow},#{pageSize}
+	</select>
+
+
+ 	<select id="getConsumeList" resultType="com.itwillbs.domain.ResultDTO"> 
+		select r.rs_num, r.stock_num, r.rs_date, i.item_name, r.consume, i.item_price
+		from result r join stock s on r.stock_num = s.stock_num
+		join item i on s.item_num = i.item_num
+		where r.num = #{num}
+		order by r.rs_date desc
+		limit #{startRow},#{pageSize}
+ 	</select>
+ 	
+ 	<insert id="stockInsert">
+ 		insert into stock(num, item_num, amount, stock_note)
+ 		values(#{num}, #{item_num}, #{amount}, #{stock_note})
+ 	</insert>
+
+ 	<insert id="stockInsert2">
+ 		insert into stock(num, item_num, amount)
+ 		values(#{num}, #{item_num}, #{rc_amount})
+ 	</insert>
+ 	
+ 	<update id="stockUpdate">
+ 		update stock
+ 		set amount = #{amount}, stock_note = #{stock_note}
+ 		where stock_num = #{stock_num}
+ 	</update>
+ 	
+ 	<select id="getItemNum" resultType="java.lang.Integer">
+ 		select item_num
+ 		from item
+ 		where item_name like concat('%', #{item_name}, '%')
+ 	</select>
+ 	
+ 	<select id="getStock" resultType="com.itwillbs.domain.StockDTO">
+ 		select a.stock_num, a.item_num, a.amount, a.stock_note, b.item_name, b.item_price, b.item_type
+ 		from stock a join item b
+ 		on a.item_num = b.item_num
+ 		where stock_num = #{stock_num}
+ 	</select>
+ 	
+ 	<select id="getOrder" resultType="com.itwillbs.domain.OrderDTO">
+ 		select o.od_num, o.num, o.od_amount, o.od_note, i.item_type, i.item_name, i.item_price, o.od_time, s.name, o.received_not, o.shipment_not
+ 		from `order` o join item i
+ 		on o.item_num = i.item_num
+ 		join store s on o.num = s.num
+ 		where o.od_num = #{od_num}
+ 	</select>
+ 	
+ 	<select id="getItem" resultType="com.itwillbs.domain.ItemDTO">
+ 		select * from item
+ 		where item_num = #{item_num}
+ 	</select>
+ 	
+ 	<insert id="receiveInsert">
+ 		insert into receive(od_num, num, item_num, rc_amount, rc_note)
+ 		values(#{od_num}, #{num}, #{item_num}, #{rc_amount}, #{rc_note})
+ 	</insert>
+ 	
+ 	<insert id="orderInsert">
+ 		insert into `order`(num, item_num, od_amount, od_note)
+ 		values(#{num}, #{item_num}, #{od_amount}, #{od_note}) 
+ 	</insert>
+ 	
+ 	<update id="orderUpdate">
+ 		update `order`
+ 		set od_amount = #{od_amount}, od_note = #{od_note}
+ 		where od_num = #{od_num}
+ 	</update>
+ 	
+ 	<update id="receiveUpdate">
+ 		update receive
+ 		set rc_amount = #{rc_amount}, rc_note = #{rc_note}
+ 		where od_num = #{od_num}
+ 	</update>
+ 	
+ 	<select id="getReceive" resultType="com.itwillbs.domain.ReceiveDTO">
+ 		select a.od_num, a.num, a.item_num, a.rc_amount, a.rc_note, b.item_type, b.item_price, b.item_name, c.name, a.pay , a.rc_time
+ 		from receive a join item b
+ 		on a.item_num = b.item_num
+ 		join store c on a.num = c.num
+ 		where od_num = #{od_num}
+ 	</select>
+
+
+	<select id="searchConsumeList" resultType="com.itwillbs.domain.ResultDTO">
+ 		select r.rs_date, i.item_name, r.consume, i.item_price
+		from result r join stock s on r.stock_num = s.stock_num
+		join item i on s.item_num = i.item_num
+		<where>
+ 			r.num = #{num}
+ 			<if test="rs_maxDate != ''">
+ 				and r.rs_date between #{rs_minDate} and #{rs_maxDate}
+ 			</if>
+ 			<if test="rs_minDate != '' and rs_maxDate == ''">
+ 				and r.rs_date >= #{rs_minDate}
+ 			</if>
+ 		</where>
+		order by r.rs_date desc
+		limit #{startRow}, #{pageSize}
+ 	</select>
+
+
+    <select id="getSellList" resultType="com.itwillbs.domain.ResultDTO"> 
+	    select r.rs_num, r.rs_date , p.prod_name, r.sales, p.prod_price
+        from result r join product p on r.prod_num = p.prod_num
+        where r.num = #{num}
+        order by r.rs_date desc
+        limit #{startRow}, #{pageSize} 
+	</select>
+
+ 	
+ 	<select id="searchSellList" resultType="com.itwillbs.domain.ResultDTO">
+ 		select r.rs_date , p.prod_name, r.sales, p.prod_price
+        from result r join product p on r.prod_num = p.prod_num
+        <where>
+ 			r.num = #{num}
+ 			<if test="rs_maxDate != ''">
+ 				and r.rs_date between #{rs_minDate} and #{rs_maxDate}
+ 			</if>
+ 			<if test="rs_minDate != '' and rs_maxDate == ''">
+ 				and r.rs_date >= #{rs_minDate}
+ 			</if>
+ 		</where>
+        order by r.rs_date desc
+        limit #{startRow}, #{pageSize}  
+ 	</select>
+ 	
+ 	
+ 	<select id="getResultList" resultType="com.itwillbs.domain.ResultDTO"> 
+		select r.rs_date "rs_date", sum(ifnull(r.sales*p.prod_price, 0)) "maechul", sum(ifnull(r.consume*i.item_price, 0)) "jichul", (sum(ifnull(r.sales*p.prod_price, 0)))-(sum(ifnull(r.consume*i.item_price, 0))) "income"
+		from result r left join product p
+		on r.prod_num = p.prod_num
+		left join stock s on r.stock_num = s.stock_num
+		left join item i on s.item_num = i.item_num
+		where r.num = #{num}
+		group by r.rs_date
+		order by r.rs_date desc
+		limit #{startRow}, #{pageSize}
+ 	</select>
+ 	
+ 	
+ 	<select id="searchResultList" resultType="com.itwillbs.domain.ResultDTO">
+ 		select r.rs_date "rs_date", sum(ifnull(r.sales*p.prod_price, 0)) "maechul", sum(ifnull(r.consume*i.item_price, 0)) "jichul", (sum(ifnull(r.sales*p.prod_price, 0)))-(sum(ifnull(r.consume*i.item_price, 0))) "income"
+		from result r left join product p
+		on r.prod_num = p.prod_num
+		left join stock s on r.stock_num = s.stock_num
+		left join item i on s.item_num = i.item_num
+		where r.num = #{num}
+		group by r.rs_date
+ 		<if test="rs_maxDate != ''">
+ 			having r.rs_date between #{rs_minDate} and #{rs_maxDate}
+ 		</if>
+ 		<if test="rs_minDate != '' and rs_maxDate == ''">
+ 			having r.rs_date >= #{rs_minDate}
+ 		</if>
+ 		order by r.rs_date desc
+ 		limit #{startRow}, #{pageSize}
+ 	</select>
+ 	
+
+ 	<select id="getStock6" resultType="com.itwillbs.domain.StockDTO">
+ 		select i.item_name, s.amount
+ 		from stock s join item i on s.item_num = i.item_num
+ 		where s.num = #{num}
+ 		order by s.amount
+ 		limit 6
+ 	</select>
+ 	
+ 	<select id="getResultMain" resultType="com.itwillbs.domain.ResultDTO">
+ 		select r.rs_date, sum(ifnull(r.sales*p.prod_price,0)) "maechul",
+ 						sum(ifnull(r.consume*i.item_price,0)) "jichul",
+ 						(sum(ifnull(r.sales*p.prod_price,0))-sum(ifnull(r.consume*i.item_price,0))) "income"
+		from result r left join product p
+		on r.prod_num = p.prod_num
+		left join stock s on r.stock_num = s.stock_num
+		left join item i on s.item_num = i.item_num
+		where r.num = #{num}
+		group by r.rs_date;
+ 	</select>
+
+ 	<select id="getStockNum" resultType="java.lang.Integer">
+		select b.stock_num  	
+ 		from item a join stock b
+ 		on a.item_num = b.item_num
+ 		where a.item_name = #{item_name} and b.num = #{num}
+ 	</select>
+ 	
+	<insert id="consumeInsert">
+		insert into result(num, stock_num, rs_date, consume)
+		values(#{num}, #{stock_num}, #{rs_date}, #{consume})
+	</insert>
+	
+	<update id="stockDecrease">
+		update stock
+		set amount = amount-#{consume}
+		where stock_num = #{stock_num}
+	</update>
+	
+	<update id="receiveState">
+		update `order`
+		set received_not = 1
+		where od_num = #{od_num}
+	</update>
+	
+	<select id="getConsume" resultType="com.itwillbs.domain.ResultDTO">
+		select a.rs_num, a.stock_num, a.rs_date, a.consume, a.rs_note, c.item_name, c.item_type, c.item_price
+		from result a join stock b
+		on a.stock_num = b.stock_num
+        join item c
+        on b.item_num = c.item_num
+        where rs_num = #{rs_num};
+	</select>
+
+
+	<update id="consumeUpdate">
+		update result
+		set consume = #{consume}
+		where rs_num = #{rs_num};
+	</update>
+
+	<update id="stockReset">
+		update stock
+		set amount = amount+#{consumeBefore}
+		where stock_num = #{stock_num}
+	</update>
+
+	<insert id="sellInsert">
+		insert into result(num, prod_num, rs_date, sales)
+		values(#{num}, #{prod_num}, #{rs_date}, #{sales})
+
+	</insert>
+	
+	<update id="stockIncrease">
+		update stock
+		set amount = amount + #{rc_amount}
+		where num = #{num} and item_num = #{item_num}
+	</update>
+
+ 	<select id="getStockEx" resultType="java.lang.String">
+ 		select stock_num
+ 		from stock
+ 		where num = #{num} and item_num = #{item_num}
+ 	</select>
+ 	
+ 	<select id="getProdNum" resultType="java.lang.Integer">
+ 		select prod_num
+ 		from product
+ 		where prod_name = #{prod_name}
+ 	</select>
+
+	<select id="getSales" resultType="com.itwillbs.domain.ResultDTO">
+		select a.rs_num, a.rs_date, a.sales, a.prod_num, b.prod_name, b.prod_type, b.prod_price
+		from result a join product b
+		on a.prod_num = b.prod_num
+        where rs_num = #{rs_num}
+	</select>
+	
+	<update id="salesUpdate">
+		update result
+		set sales = #{sales}
+		where rs_num = #{rs_num}
+	</update>
+	
+	<delete id="orderDelete">
+		delete from `order` where od_num = #{od_num}
+	</delete>
+	
+	<update id="stockDecreaseReset">
+		update stock
+		set amount = amount-#{rc_amountBefore}
+		where item_num = #{item_num} and num = #{num}
+	</update>
+
+	<update id="autoPay">
+		update receive
+		set pay = 1
+		<where>
+		<if test="date lt 20">
+		rc_time &lt;= concat(#{year}, '-', (#{month}-1), '-', 20) 
+		</if>
+		<if test="date >= 20">
+		rc_time &lt;= concat(#{year}, '-', (#{month}), '-', 20)
+		</if>
+		</where>
+
+	</update>
+
+ 		
+
+ 	
+ 	<select id="getStockCountS" resultType="java.lang.Integer"> 
+ 		select count(*) from stock s join item t
+ 		on s.item_num = t.item_num
+ 		<where>
+ 			s.num = #{num}
+			<if test="item_type != 100">
+				and t.item_type = #{item_type}
+			</if>	
+			<if test="item_maxPrice != 0">
+    			and t.item_price between #{item_minPrice} and #{item_maxPrice}
+    		</if>
+			<if test="item_minPrice != 0 and item_maxPrice == 0">
+				and t.item_price >= #{item_minPrice}
+			</if>
+			<if test="item_name != ''">
+				and t.item_name like concat('%', #{item_name}, '%')
+			</if>
+			<if test="amount_max != 0">
+    			and s.amount between #{amount_min} and #{amount_max}
+    		</if>
+			<if test="amount_min != 0 and amount_max == 0">
+				and s.amount >= #{amount_min}
+			</if>
+		</where>
+ 	</select>
+ 	
+ 	<select id="getOrderCountO" resultType="java.lang.Integer"> 
+ 		select count(*) from `order` o join store s on o.num = s.num
+ 		join item t on o.item_num = t.item_num
+ 		<where>
+ 			o.num = #{num}
+ 			<if test="item_name != ''">
+     			and t.item_name like concat('%', #{item_name}, '%')
+    		</if>
+    		<if test="item_maxPrice != 0">
+    			and t.item_price between #{item_minPrice} and #{item_maxPrice}
+    		</if>
+			<if test="item_minPrice != 0 and item_maxPrice == 0">
+				and t.item_price >= #{item_minPrice}
+			</if>
+    		<if test="od_maxTime != ''">
+    			and o.od_time between #{od_minTime} and #{od_maxTime}
+    		</if>
+			<if test="od_minTime != '' and od_maxTime == ''">
+				and o.od_time >= #{od_minTime}
+			</if>
+    		<if test="received_not != 100">
+    			and o.received_not = #{received_not}
+    		</if>
+ 		</where>
+ 		
+ 	</select>
+ 	
+ 	<select id="getReceiveCountR" resultType="java.lang.Integer"> 
+ 		select count(*)
+  		from receive r join item t on r.item_num = t.item_num
+  		<where>
+  				r.num = #{num}
+  			<if test="item_name != ''">
+  				and t.item_name like concat('%', #{item_name}, '%')
+    		</if>
+    		<if test="item_maxPrice != 0">
+    			and t.item_price between #{item_minPrice} and #{item_maxPrice}
+    		</if>
+			<if test="item_minPrice != 0 and item_maxPrice == 0">
+				and t.item_price >= #{item_minPrice}
+			</if>
+    		<if test="rc_maxTime != ''">
+      			and date(r.rc_time) between #{rc_minTime} and #{rc_maxTime}
+    		</if>
+    		<if test="rc_minTime != '' and rc_maxTime == ''">
+      			and date(r.rc_time) >= #{rc_minTime}
+    		</if>
+    		<if test="pay != 100">
+    			and r.pay = #{pay}
+    		</if>
+  		</where>
+ 	</select>
+ 	
+ 	<select id="getConsumeCountC" resultType="java.lang.Integer">
+ 		select count(*)
+		from result r join stock s on r.stock_num = s.stock_num
+		join item i on s.item_num = i.item_num
+		<where>
+ 			r.num = #{num}
+ 			<if test="rs_maxDate != ''">
+ 				and r.rs_date between #{rs_minDate} and #{rs_maxDate}
+ 			</if>
+ 			<if test="rs_minDate != '' and rs_maxDate == ''">
+ 				and r.rs_date >= #{rs_minDate}
+ 			</if>
+ 		</where>
+ 	</select>
+ 	
+ 	<select id="getSellCountS" resultType="java.lang.Integer">
+ 		select count(*)
+        from result r join product p on r.prod_num = p.prod_num
+        <where>
+ 			r.num = #{num}
+ 			<if test="rs_maxDate != ''">
+ 				and r.rs_date between #{rs_minDate} and #{rs_maxDate}
+ 			</if>
+ 			<if test="rs_minDate != '' and rs_maxDate == ''">
+ 				and r.rs_date >= #{rs_minDate}
+ 			</if>
+ 		</where>
+ 	</select>
+ 	
+ 	<select id="getResultCountR" resultType="java.lang.Integer">
+ 		select count(distinct rs_date)
+		from result
+		<where>
+			num = #{num}
+			<if test="rs_maxDate != ''">
+ 				and rs_date between #{rs_minDate} and #{rs_maxDate}
+ 			</if>
+ 			<if test="rs_minDate != '' and rs_maxDate == ''">
+ 				and rs_date >= #{rs_minDate}
+ 			</if>
+ 		</where>
+ 	</select>
+ 	
+ 	
+ 	<select id="getItemCount" resultType="java.lang.Integer"> 
+ 		select count(*) from item
+ 	</select>
+
+<select id="getItemCountI" resultType="java.lang.Integer"> 
+ 		select count(*) from item
+ 		<where>
+			<if test="item_type != 100">
+				item_type = #{item_type}
+			</if>
+			<if test="item_name != null">
+				and item_name like concat('%', #{item_name}, '%')
+			</if>
+			<if test="item_maxPrice != 0">
+				and item_price between #{item_minPrice} and #{item_maxPrice}
+			</if>
+			<if test="item_minPrice != 0 and item_maxPrice == 0">
+				and item_price >= #{item_minPrice}
+			</if>
+			<if test="item_state != 100">
+				and item_state = #{item_state}
+			</if>
+		</where>
+ 	</select>
+
+
+     <select id="getStockCount" resultType="java.lang.Integer"> 
+ 		select count(*) from stock
+ 		where num = #{num}
+ 	</select>
+
+
+
+	<select id="getAmount" resultType="java.lang.Integer">
+		select amount
+		from stock
+		where stock_num = #{stock_num}
+	</select>
+	
+	
+	
+	
+	
+
+     <select id="getOrderCount" resultType="java.lang.Integer"> 
+ 		select count(*) from `order`
+ 		where num = #{num}  
+ 	</select>
+ 	
+ 	<select id="getReceiveCount" resultType="java.lang.Integer"> 
+ 		select count(*) from receive
+ 		where num = #{num}
+ 	</select>
+ 	
+ 	<select id="getConsumeCount" resultType="java.lang.Integer">
+ 		select count(*)
+		from result r join stock s on r.stock_num = s.stock_num
+		join item i on s.item_num = i.item_num
+ 		where r.num = #{num}
+ 	</select>
+ 	
+ 	<select id="getSellCount" resultType="java.lang.Integer">
+ 		select count(*)
+        from result r join product p on r.prod_num = p.prod_num
+        where r.num = #{num}
+ 	</select>
+ 	
+ 	<select id="getResultCount" resultType="java.lang.Integer">
+ 		select count(distinct rs_date)
+		from result
+		where num = #{num}
+ 	</select>
+
+</mapper>
+
