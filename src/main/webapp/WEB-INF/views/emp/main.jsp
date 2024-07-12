@@ -134,7 +134,7 @@ input[type=text]{
         <div id="settings-trigger"><i class="ti-settings"></i></div>
         <div id="theme-settings" class="settings-panel">
           <i class="settings-close ti-close"></i>
-               <p class="settings-heading">사이드바 색상 및 바로가기</p>
+               <p class="settings-heading">사이드바 색상 변경</p>
           <div class="sidebar-bg-options selected" id="sidebar-light-theme"><div class="img-ss rounded-circle bg-light border mr-3"></div>light</div>
           <div class="sidebar-bg-options" id="sidebar-dark-theme"><div class="img-ss rounded-circle bg-dark border mr-3"></div>dark</div>
           <p class="settings-heading mt-2">헤더 색상</p>
@@ -146,7 +146,6 @@ input[type=text]{
             <div class="tiles dark"></div>
             <div class="tiles default"></div>
           </div>
-          <button style="background-color: black; color: #EFBDBC;" onclick="location.href='${pageContext.request.contextPath}/store/login'">지점 페이지</button>
         </div>
       </div>
 
@@ -168,6 +167,7 @@ input[type=text]{
                   <h4 class="card-title">실적 높은 TOP5 지점</h4>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.5.0/Chart.min.js"></script>
 <canvas id="bar-chart-horizontal" width="600" height="250"></canvas>
+<p>매출을 입력한 지점에 한하여 작일 기준으로 매출이 높은 지점이 나타납니다.</p>
 <script>
 $(document).ready(function() {
     $.ajax({
@@ -212,15 +212,15 @@ $(document).ready(function() {
 </div>
 </div>
          </fieldset>
-         <fieldset style="padding-top: 3px;">
-          <div class="card" >
-		<div class="card-body" >
-                  <h4 class="card-title">일정</h4>
-              <div id='calendar'></div>
+<!--          <fieldset style="padding-top: 3px;"> -->
+<!--           <div class="card" > -->
+<!-- 		<div class="card-body" > -->
+<!--                   <h4 class="card-title">일정</h4> -->
+<!--               <div id='calendar'></div> -->
                   
-                  </div>
-                  </div>
-         </fieldset>
+<!--                   </div> -->
+<!--                   </div> -->
+<!--          </fieldset> -->
 
         </div>
         <!-- content-wrapper ends -->

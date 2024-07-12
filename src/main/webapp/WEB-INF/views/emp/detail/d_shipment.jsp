@@ -64,10 +64,10 @@ font-size: 16px;
 <tr>
 <th>결제여부</th>
 	<c:if test="${shipmentDTO.pay eq 0}">
-      <td style="color:red; ">미결제</td>
+      <td style="color:red;" colspan="3"><b>미결제</b></td>
   	</c:if>
   	 <c:if test="${shipmentDTO.pay eq 1}">
-      <td style=" color:green; ">결제완료</td>
+      <td style="color:green;" colspan="3"><b>결제완료</b></td>
   	</c:if>
 </tr>
 <tr>

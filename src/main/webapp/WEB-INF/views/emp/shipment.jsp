@@ -178,7 +178,7 @@ label input[type=radio]:checked:after{
         <div id="settings-trigger"><i class="ti-settings"></i></div>
         <div id="theme-settings" class="settings-panel">
           <i class="settings-close ti-close"></i>
-            <p class="settings-heading">사이드바 색상 및 바로가기</p>
+            <p class="settings-heading">사이드바 색상 변경</p>
           <div class="sidebar-bg-options selected" id="sidebar-light-theme"><div class="img-ss rounded-circle bg-light border mr-3"></div>light</div>
           <div class="sidebar-bg-options" id="sidebar-dark-theme"><div class="img-ss rounded-circle bg-dark border mr-3"></div>dark</div>
           <p class="settings-heading mt-2">헤더 색상</p>
@@ -190,7 +190,7 @@ label input[type=radio]:checked:after{
             <div class="tiles dark"></div>
             <div class="tiles default"></div>
           </div>
-          <button style="background-color: black; color: #EFBDBC;" onclick="location.href='${pageContext.request.contextPath}/store/login'">지점 페이지</button>
+<%--           <button style="background-color: black; color: #EFBDBC;" onclick="location.href='${pageContext.request.contextPath}/store/login'">지점 페이지</button> --%>
         </div>
       </div>
 
@@ -227,7 +227,7 @@ label input[type=radio]:checked:after{
 						
 						<li><div class="search_div"><label class="search_name"><b>입고여부</b></label>
 						<select class="choose" name="received_not">
-							<option value="100">-----------------------------------------------</option>
+							<option value="100">입고여부를 선택해주세요</option>
 							<option value="0">미입고</option>
 							<option value="1">입고완료</option>
 						</select>	
@@ -264,30 +264,30 @@ label input[type=radio]:checked:after{
  		 </tr>
  		 <c:forEach var="ShipmentDTO" items="${shipmentList}">
   <tr onclick="window.open('${pageContext.request.contextPath}/emp/detail/d_shipment?od_num=${ShipmentDTO.od_num}','홍커피','width=1500,height=725,top=100, left=200,scrollbars=yes')">
-    <td style="text-align: center !important; font-size:20px !important;" onclick="event.cancelBubble=true"><label for="radio1-true"><input type="radio" name="radio1" id="radio1-true" value="${ShipmentDTO.od_num }"></label></td>
-   	<td style="text-align: center !important; font-size:20px !important;">${ShipmentDTO.name}</td>
-   	<td style="text-align: center !important; font-size:20px !important;">${ShipmentDTO.item_name}</td>
-    <td style="text-align: center !important; font-size:20px !important;">${ShipmentDTO.sh_amount}</td>
-   	<td style="text-align: center !important; font-size:20px !important;">
+    <td style="text-align: center !important; font-size:15px !important;" onclick="event.cancelBubble=true"><label for="radio1-true"><input type="radio" name="radio1" id="radio1-true" value="${ShipmentDTO.od_num }"></label></td>
+   	<td style="text-align: center !important; font-size:15px !important;">${ShipmentDTO.name}</td>
+   	<td style="text-align: center !important; font-size:15px !important;">${ShipmentDTO.item_name}</td>
+    <td style="text-align: center !important; font-size:15px !important;">${ShipmentDTO.sh_amount}</td>
+   	<td style="text-align: center !important; font-size:15px !important;">
    	<fmt:formatNumber value="${ShipmentDTO.item_price}" pattern="#,###"></fmt:formatNumber>
    	</td>
- 	<td style="text-align: center !important; font-size:20px !important;">
+ 	<td style="text-align: center !important; font-size:15px !important;">
  	<fmt:formatNumber value="${ShipmentDTO.item_price * ShipmentDTO.sh_amount}" pattern="#,###"></fmt:formatNumber>
  	</td>
- 	 <td style="text-align: center !important; font-size:20px !important;"><%-- <fmt:formatDate value="${ShipmentDTO.sh_time}" pattern="yyyy.MM.dd HH:mm:ss"/> --%>${ShipmentDTO.sh_time}</td>
+ 	 <td style="text-align: center !important; font-size:15px !important;"><%-- <fmt:formatDate value="${ShipmentDTO.sh_time}" pattern="yyyy.MM.dd HH:mm:ss"/> --%>${ShipmentDTO.sh_time}</td>
 	
 	<c:if test="${ShipmentDTO.received_not eq 0}">
-      <td style="text-align: center !important; font-size:20px !important; color:red; ">미입고</td>
+      <td style="text-align: center !important; font-size:15px !important; color:red; ">미입고</td>
   	</c:if>
   	 <c:if test="${ShipmentDTO.received_not eq 1}">
-      <td style="text-align: center !important; font-size:20px !important; color:green; ">입고완료</td>
+      <td style="text-align: center !important; font-size:15px !important; color:green; ">입고완료</td>
   	</c:if>
 
   	<c:if test="${ShipmentDTO.pay eq 0}">
-      <td style="text-align: center !important; font-size:20px !important; color:red; ">미결제</td>
+      <td style="text-align: center !important; font-size:15px !important; color:red; ">미결제</td>
   	</c:if>
   	 <c:if test="${ShipmentDTO.pay eq 1}">
-      <td style="text-align: center !important; font-size:20px !important; color:green; ">결제완료</td>
+      <td style="text-align: center !important; font-size:15px !important; color:green; ">결제완료</td>
   	</c:if>
   </tr>
   		</c:forEach>
@@ -299,15 +299,15 @@ label input[type=radio]:checked:after{
 		<c:if test="${pageDTO.count ne -1}">
   		
 		<c:if test="${pageDTO.startPage > pageDTO.pageBlock}">
-			<a href="${pageContext.request.contextPath}/emp/shipment?pageNum=${pageDTO.startPage - pageDTO.pageBlock}">Prev</a>
+			<a href="${pageContext.request.contextPath}/emp/shipment?pageNum=${pageDTO.startPage - pageDTO.pageBlock}" style="font-size: 20px">Prev</a>
 		</c:if>
 		
 		<c:forEach var="i" begin="${pageDTO.startPage}" end="${pageDTO.endPage}" step="1">
-			<a href="${pageContext.request.contextPath}/emp/shipment?pageNum=${i}">${i}</a>
+			<a href="${pageContext.request.contextPath}/emp/shipment?pageNum=${i}" style="font-size: 20px">${i}</a>
 		</c:forEach>
 		
 		<c:if test="${pageDTO.endPage < pageDTO.pageCount}">
-			<a href="${pageContext.request.contextPath}/emp/shipment?pageNum=${pageDTO.startPage + pageDTO.pageBlock}">Next</a>
+			<a href="${pageContext.request.contextPath}/emp/shipment?pageNum=${pageDTO.startPage + pageDTO.pageBlock}" style="font-size: 20px">Next</a>
 		</c:if>
 		
 		</c:if>
@@ -316,18 +316,18 @@ label input[type=radio]:checked:after{
 		<c:if test="${pageDTO.count eq -1}">
 		
 		<c:if test="${shipmentDTO.startPage > shipmentDTO.pageBlock}">
-			<a href="${pageContext.request.contextPath}/emp/shipment?pageNum=${shipmentDTO.startPage - shipmentDTO.pageBlock}">Prev</a>
+			<a href="${pageContext.request.contextPath}/emp/shipment?pageNum=${shipmentDTO.startPage - shipmentDTO.pageBlock}" style="font-size: 20px">Prev</a>
 		</c:if>
 		
 		<c:forEach var="i" begin="${shipmentDTO.startPage}" end="${shipmentDTO.endPage}" step="1">
 			<a href="${pageContext.request.contextPath}/emp/shipmentSearch?pageNum=${i}&name=${shipmentDTO.name}
 			&item_name=${shipmentDTO.item_name}&item_minPrice=${shipmentDTO.item_minPrice}
 			&item_maxPrice=${shipmentDTO.item_maxPrice}&sh_minTime=${shipmentDTO.sh_minTime}
-			&sh_maxTime=${shipmentDTO.sh_maxTime}&received_not=${shipmentDTO.received_not}">${i}</a>
+			&sh_maxTime=${shipmentDTO.sh_maxTime}&received_not=${shipmentDTO.received_not}" style="font-size: 20px">${i}</a>
 		</c:forEach>
 		
 		<c:if test="${shipmentDTO.endPage < shipmentDTO.pageCount}">
-			<a href="${pageContext.request.contextPath}/emp/shipment?pageNum=${shipmentDTO.startPage + shipmentDTO.pageBlock}">Next</a>
+			<a href="${pageContext.request.contextPath}/emp/shipment?pageNum=${shipmentDTO.startPage + shipmentDTO.pageBlock}" style="font-size: 20px">Next</a>
 		</c:if>
 		
 		</c:if>

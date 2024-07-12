@@ -180,7 +180,7 @@ label input[type=radio]:checked:after{
         <div id="settings-trigger"><i class="ti-settings"></i></div>
         <div id="theme-settings" class="settings-panel">
           <i class="settings-close ti-close"></i>
-                <p class="settings-heading">사이드바 색상 및 바로가기</p>
+                <p class="settings-heading">사이드바 색상 변경</p>
           <div class="sidebar-bg-options selected" id="sidebar-light-theme"><div class="img-ss rounded-circle bg-light border mr-3"></div>light</div>
           <div class="sidebar-bg-options" id="sidebar-dark-theme"><div class="img-ss rounded-circle bg-dark border mr-3"></div>dark</div>
           <p class="settings-heading mt-2">헤더 색상</p>
@@ -192,7 +192,7 @@ label input[type=radio]:checked:after{
             <div class="tiles dark"></div>
             <div class="tiles default"></div>
           </div>
-          <button style="background-color: black; color: #EFBDBC;" onclick="location.href='${pageContext.request.contextPath}/store/login'">지점 페이지</button>
+<%--           <button style="background-color: black; color: #EFBDBC;" onclick="location.href='${pageContext.request.contextPath}/store/login'">지점 페이지</button> --%>
         </div>
       </div>
 
@@ -261,8 +261,8 @@ label input[type=radio]:checked:after{
 
 					<li><div class="search_div"><label class="search_name"><b>부서</b></label>
 					<select class="choose" name="emp_dept">
-					<option value="100">-----------------------------------------------</option>
-					<option value="0">무소속</option>
+					<option value="100">부서를 선택해주세요</option>
+					<option value="0">소속없음</option>
 					<option value="1">인사부</option>
 					<option value="2">영업부</option>
 					<option value="3">재무부</option></select></div></li>
@@ -271,8 +271,8 @@ label input[type=radio]:checked:after{
 
 					<li><div class="search_div"><label class="search_name"><b>직급</b></label>
 					<select class="choose2" name="emp_rank">
-					<option value="100">-----------------------------------------------</option>
-					<option value="0">무보직</option>
+					<option value="100">직급을 선택해주세요</option>
+					<option value="0">직급없음</option>
 					<option value="1">대표</option>
 					<option value="2">팀장</option>
 					<option value="3">대리</option>
@@ -333,63 +333,63 @@ label input[type=radio]:checked:after{
 
   <tr onclick="window.open('${pageContext.request.contextPath}/emp/detail/d_emp?emp_num=${EmployeeDTO.emp_num}','홍커피','width=1500,height=725,top=100, left=200,scrollbars=yes')">
   		<sec:authorize access="hasRole('ROLE_ADMIN')">
-    <td style="text-align: center !important; font-size:20px !important;" onclick="event.cancelBubble=true"><label for="radio1-true"><input type="radio" name="radio1" id="radio1-true" value="${EmployeeDTO.emp_num }"></label></td>
+    <td style="text-align: center !important; font-size:15px !important;" onclick="event.cancelBubble=true"><label for="radio1-true"><input type="radio" name="radio1" id="radio1-true" value="${EmployeeDTO.emp_num }"></label></td>
  		</sec:authorize>
 
-    <td style="text-align: center !important; font-size:20px !important;">${EmployeeDTO.emp_num}</td>
-   	<td style="text-align: center !important; font-size:20px !important;">${EmployeeDTO.emp_name}</td>
-   	<td style="text-align: center !important; font-size:20px !important;">${EmployeeDTO.emp_birth}</td>
+    <td style="text-align: center !important; font-size:15px !important;">${EmployeeDTO.emp_num}</td>
+   	<td style="text-align: center !important; font-size:15px !important;">${EmployeeDTO.emp_name}</td>
+   	<td style="text-align: center !important; font-size:15px !important;">${EmployeeDTO.emp_birth}</td>
 
     <c:if test="${EmployeeDTO.emp_dept eq 0}">
-    <td style="text-align: center !important; font-size:20px !important;">소속없음</td>
+    <td style="text-align: center !important; font-size:15px !important;">소속없음</td>
     </c:if>
         <c:if test="${EmployeeDTO.emp_dept eq 1}">
-    <td style="text-align: center !important; font-size:20px !important;">인사팀</td>
+    <td style="text-align: center !important; font-size:15px !important;">인사팀</td>
     </c:if>
         <c:if test="${EmployeeDTO.emp_dept eq 2}">
-    <td style="text-align: center !important; font-size:20px !important;">영업팀</td>
+    <td style="text-align: center !important; font-size:15px !important;">영업팀</td>
     </c:if>
         <c:if test="${EmployeeDTO.emp_dept eq 3}">
-    <td style="text-align: center !important; font-size:20px !important;">재무팀</td>
+    <td style="text-align: center !important; font-size:15px !important;">재무팀</td>
     </c:if>
     
          <c:if test="${EmployeeDTO.emp_rank eq 0}">
-    <td style="text-align: center !important; font-size:20px !important;">직급없음</td>
+    <td style="text-align: center !important; font-size:15px !important;">직급없음</td>
     </c:if>
         <c:if test="${EmployeeDTO.emp_rank eq 1}">
-    <td style="text-align: center !important; font-size:20px !important;">대표</td>
+    <td style="text-align: center !important; font-size:15px !important;">대표</td>
     </c:if>
         <c:if test="${EmployeeDTO.emp_rank eq 2}">
-    <td style="text-align: center !important; font-size:20px !important;">팀장</td>
+    <td style="text-align: center !important; font-size:15px !important;">팀장</td>
     </c:if>
         <c:if test="${EmployeeDTO.emp_rank eq 3}">
-    <td style="text-align: center !important; font-size:20px !important;">대리</td>
+    <td style="text-align: center !important; font-size:15px !important;">대리</td>
     </c:if>
         <c:if test="${EmployeeDTO.emp_rank eq 4}">
-    <td style="text-align: center !important; font-size:20px !important;">사원</td>
+    <td style="text-align: center !important; font-size:15px !important;">사원</td>
     </c:if>
    	
 	<sec:authorize access="hasRole('ROLE_ADMIN')">
-   		<td style="text-align: center !important; font-size:20px !important;">
+   		<td style="text-align: center !important; font-size:15px !important;">
    			<c:if test="${EmployeeDTO.emp_right eq 1}">관리자</c:if>
    			<c:if test="${EmployeeDTO.emp_right eq 0}">일반</c:if>
    		</td>
 	</sec:authorize>
 
- 	<td style="text-align: center !important; font-size:20px !important;">${EmployeeDTO.emp_phone}</td>
- 	<td style="text-align: center !important; font-size:20px !important;">${EmployeeDTO.emp_email}</td>
- 	<td style="text-align: center !important; font-size:20px !important;">${EmployeeDTO.hire_date}</td>
+ 	<td style="text-align: center !important; font-size:15px !important;">${EmployeeDTO.emp_phone}</td>
+ 	<td style="text-align: center !important; font-size:15px !important;">${EmployeeDTO.emp_email}</td>
+ 	<td style="text-align: center !important; font-size:15px !important;">${EmployeeDTO.hire_date}</td>
 
  		<c:if test="${EmployeeDTO.emp_state eq 1}">
- 		<td style="text-align: center !important; font-size:20px !important; color:green; ">재직</td>
+ 		<td style="text-align: center !important; font-size:15px !important; color:green; ">재직</td>
  		</c:if>
  		
  		<c:if test="${EmployeeDTO.emp_state eq 2}">
- 		<td style="text-align: center !important; font-size:20px !important; color:orange; ">휴직</td>
+ 		<td style="text-align: center !important; font-size:15px !important; color:orange; ">휴직</td>
  		</c:if>
  		
  		<c:if test="${EmployeeDTO.emp_state eq 3}">
- 		<td style="text-align: center !important; font-size:20px !important; color:red; ">퇴직</td>
+ 		<td style="text-align: center !important; font-size:15px !important; color:red; ">퇴직</td>
  		</c:if>
 
   </tr>
@@ -399,12 +399,12 @@ label input[type=radio]:checked:after{
  		 
  		   <div id="page_control">
 		<c:if test="${pageDTO.startPage > pageDTO.pageBlock}">
-			<a href="${pageContext.request.contextPath}/emp/emp?pageNum=${pageDTO.startPage - pageDTO.pageBlock}">Prev</a>
+			<a href="${pageContext.request.contextPath}/emp/emp?pageNum=${pageDTO.startPage - pageDTO.pageBlock}" style="font-size: 20px">Prev</a>
 		</c:if>
 		
 		<c:if test="${pageDTO.count ne -1}">
 		<c:forEach var="i" begin="${pageDTO.startPage}" end="${pageDTO.endPage}" step="1">
-			<a href="${pageContext.request.contextPath}/emp/emp?pageNum=${i}">${i}</a>
+			<a href="${pageContext.request.contextPath}/emp/emp?pageNum=${i}" style="font-size: 20px">${i}</a>
 		</c:forEach>
 		</c:if>
 		
@@ -412,12 +412,12 @@ label input[type=radio]:checked:after{
 		<c:forEach var="i" begin="${employeeDTO.startPage}" end="${employeeDTO.endPage}" step="1">
 			<a href="${pageContext.request.contextPath}/emp/empSearch?pageNum=${i}&emp_dept=${employeeDTO.emp_dept}
 			&emp_rank=${employeeDTO.emp_rank}&emp_num=${employeeDTO.emp_num}
-			&emp_name=${employeeDTO.emp_name}">${i}</a>
+			&emp_name=${employeeDTO.emp_name}" style="font-size: 20px">${i}</a>
 		</c:forEach>
 		</c:if>
 
 		<c:if test="${pageDTO.endPage < pageDTO.pageCount}">
-			<a href="${pageContext.request.contextPath}/emp/emp?pageNum=${pageDTO.startPage + pageDTO.pageBlock}">Next</a>
+			<a href="${pageContext.request.contextPath}/emp/emp?pageNum=${pageDTO.startPage + pageDTO.pageBlock}" style="font-size: 20px">Next</a>
 		</c:if>
 
 		</div>

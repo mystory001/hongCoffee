@@ -168,7 +168,7 @@ label input[type=radio]:checked:after{
         <div id="settings-trigger"><i class="ti-settings"></i></div>
         <div id="theme-settings" class="settings-panel">
           <i class="settings-close ti-close"></i>
-                 <p class="settings-heading">사이드바 색상 및 바로가기</p>
+                 <p class="settings-heading">사이드바 색상 변경</p>
           <div class="sidebar-bg-options selected" id="sidebar-light-theme"><div class="img-ss rounded-circle bg-light border mr-3"></div>light</div>
           <div class="sidebar-bg-options" id="sidebar-dark-theme"><div class="img-ss rounded-circle bg-dark border mr-3"></div>dark</div>
           <p class="settings-heading mt-2">헤더 색상</p>
@@ -180,8 +180,7 @@ label input[type=radio]:checked:after{
             <div class="tiles dark"></div>
             <div class="tiles default"></div>
           </div>
-          <button style="background-color: black; color: #EFBDBC;" onclick="location.href='${pageContext.request.contextPath}/store/login'">지점 페이지</button>
-
+<%--           <button style="background-color: black; color: #EFBDBC;" onclick="location.href='${pageContext.request.contextPath}/store/login'">지점 페이지</button> --%>
         </div>
       </div>
 
@@ -216,7 +215,7 @@ label input[type=radio]:checked:after{
 				
 					<li><div class="search_div"><label class="search_name"><b>상태</b></label>
 						<select name="state" class="choose">
-							<option value="100">-----------------------------------------------</option>
+							<option value="100">상태를 선택해주세요</option>
 							<option value="1">정상영업</option>
 							<option value="2">미영업</option>
 							<option value="3">폐업</option></select>
@@ -250,46 +249,46 @@ label input[type=radio]:checked:after{
  		 <c:forEach var="StoreDTO" items="${storeList}">
 
   <tr onclick="window.open('${pageContext.request.contextPath}/emp/detail/d_store?num=${StoreDTO.num}','홍커피','width=1500,height=725,top=100, left=200,scrollbars=yes')">
-    <td style="text-align: center !important; font-size:20px !important;" onclick="event.cancelBubble=true"><label for="radio1-true"><input type="radio" name="radio1" id="radio1-true" value="${StoreDTO.num}"></label></td>
-	<td style="text-align: center !important; font-size:20px !important;">${StoreDTO.num}</td>
-   	<td style="text-align: center !important; font-size:20px !important;">${StoreDTO.name}</td>
-   	<td style="text-align: center !important; font-size:20px !important;">${StoreDTO.boss}</td>
-    <td style="text-align: center !important; font-size:20px !important;">${StoreDTO.phone}</td>
-   	<td style="text-align: center !important; font-size:20px !important;">${StoreDTO.email}</td>
-   	<td style="text-align: center !important; font-size:20px !important;">${StoreDTO.address}</td>
+    <td style="text-align: center !important; font-size:15px !important;" onclick="event.cancelBubble=true"><label for="radio1-true"><input type="radio" name="radio1" id="radio1-true" value="${StoreDTO.num}"></label></td>
+	<td style="text-align: center !important; font-size:15px !important;">${StoreDTO.num}</td>
+   	<td style="text-align: center !important; font-size:15px !important;">${StoreDTO.name}</td>
+   	<td style="text-align: center !important; font-size:15px !important;">${StoreDTO.boss}</td>
+    <td style="text-align: center !important; font-size:15px !important;">${StoreDTO.phone}</td>
+   	<td style="text-align: center !important; font-size:15px !important;">${StoreDTO.email}</td>
+   	<td style="text-align: center !important; font-size:15px !important;">${StoreDTO.address}</td>
    	<c:if test="${StoreDTO.state eq 1}">
-      <td style="text-align: center !important; font-size:20px !important; color:green; ">정상영업</td>
+      <td style="text-align: center !important; font-size:15px !important; color:green; ">정상영업</td>
   	</c:if>
   	  	<c:if test="${StoreDTO.state eq 2}">
-      <td style="text-align: center !important; font-size:20px !important; color:orange; ">미영업</td>
+      <td style="text-align: center !important; font-size:15px !important; color:orange; ">미영업</td>
   		</c:if>
   	  	<c:if test="${StoreDTO.state eq 3}">
-      <td style="text-align: center !important; font-size:20px !important; color:red; ">폐업</td>
+      <td style="text-align: center !important; font-size:15px !important; color:red; ">폐업</td>
   	</c:if>
   </tr>
   		</c:forEach>
  		 </table>
  		 
- 		 
+ 		 <br>
  		 <div id="page_control">
 		<c:if test="${pageDTO.startPage > pageDTO.pageBlock}">
-			<a href="${pageContext.request.contextPath}/emp/store?pageNum=${pageDTO.startPage - pageDTO.pageBlock}">Prev</a>
+			<a href="${pageContext.request.contextPath}/emp/store?pageNum=${pageDTO.startPage - pageDTO.pageBlock}" style="font-size: 20px">Prev</a>
 		</c:if>
 		
 		<c:if test="${pageDTO.count ne -1}">
 		<c:forEach var="i" begin="${pageDTO.startPage}" end="${pageDTO.endPage}" step="1">
-			<a href="${pageContext.request.contextPath}/emp/store?pageNum=${i}">${i}</a>
+			<a href="${pageContext.request.contextPath}/emp/store?pageNum=${i}" style="font-size: 20px">${i}</a>
 		</c:forEach>
 		</c:if>
 		
 		<c:if test="${pageDTO.count eq -1}">
 		<c:forEach var="i" begin="${storeDTO.startPage}" end="${storeDTO.endPage}" step="1">
-			<a href="${pageContext.request.contextPath}/emp/storeSearch?pageNum=${i}&name=${storeDTO.name}&boss=${storeDTO.boss}&address=${storeDTO.address}&phone=${storeDTO.phone}&state=${storeDTO.state}">${i}</a>
+			<a href="${pageContext.request.contextPath}/emp/storeSearch?pageNum=${i}&name=${storeDTO.name}&boss=${storeDTO.boss}&address=${storeDTO.address}&phone=${storeDTO.phone}&state=${storeDTO.state}" style="font-size: 20px">${i}</a>
 		</c:forEach>
 		</c:if>
 
 		<c:if test="${pageDTO.endPage < pageDTO.pageCount}">
-			<a href="${pageContext.request.contextPath}/emp/store?pageNum=${pageDTO.startPage + pageDTO.pageBlock}">Next</a>
+			<a href="${pageContext.request.contextPath}/emp/store?pageNum=${pageDTO.startPage + pageDTO.pageBlock}" style="font-size: 20px">Next</a>
 		</c:if>
 
 		</div>

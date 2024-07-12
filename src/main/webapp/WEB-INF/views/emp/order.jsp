@@ -172,7 +172,7 @@ label input[type=radio]:checked:after{
         <div id="settings-trigger"><i class="ti-settings"></i></div>
         <div id="theme-settings" class="settings-panel">
           <i class="settings-close ti-close"></i>
-             <p class="settings-heading">사이드바 색상 및 바로가기</p>
+             <p class="settings-heading">사이드바 색상 변경</p>
           <div class="sidebar-bg-options selected" id="sidebar-light-theme"><div class="img-ss rounded-circle bg-light border mr-3"></div>light</div>
           <div class="sidebar-bg-options" id="sidebar-dark-theme"><div class="img-ss rounded-circle bg-dark border mr-3"></div>dark</div>
           <p class="settings-heading mt-2">헤더 색상</p>
@@ -184,7 +184,7 @@ label input[type=radio]:checked:after{
             <div class="tiles dark"></div>
             <div class="tiles default"></div>
           </div>
-          <button style="background-color: black; color: #EFBDBC;" onclick="location.href='${pageContext.request.contextPath}/store/login'">지점 페이지</button>
+<%--           <button style="background-color: black; color: #EFBDBC;" onclick="location.href='${pageContext.request.contextPath}/store/login'">지점 페이지</button> --%>
         </div>
       </div>
 
@@ -221,7 +221,7 @@ label input[type=radio]:checked:after{
 						
 					<li><div class="search_div"><label class="search_name"><b>출하여부</b></label>
 						<select class="choose" name="shipment_not">
-							<option value="100">-----------------------------------------------</option>
+							<option value="100">출하여부를 선택해주세요</option>
 							<option value="0">미출하</option>
 							<option value="1">출하완료</option>
 						</select>
@@ -259,33 +259,21 @@ label input[type=radio]:checked:after{
  		 </tr>
  		 <c:forEach var="OrderDTO" items="${orderList}">
   <tr onclick="window.open('${pageContext.request.contextPath}/emp/detail/d_order?od_num=${OrderDTO.od_num}','홍커피','width=1500,height=725,top=100, left=200,scrollbars=yes')">
-   <td style="text-align: center !important; font-size:20px !important;" onclick="event.cancelBubble=true"><label for="radio1-true"><input type="radio" name="radio1" id="radio1-true" value="${OrderDTO.od_num }"></label></td>
+   <td style="text-align: center !important; font-size:15px !important;" onclick="event.cancelBubble=true"><label for="radio1-true"><input type="radio" name="radio1" id="radio1-true" value="${OrderDTO.od_num }"></label></td>
 
-   	<td style="text-align: center !important; font-size:20px !important;">${OrderDTO.name}</td>
-   	<td style="text-align: center !important; font-size:20px !important;">${OrderDTO.item_name}</td>
-<%--    	<td style="text-align: center !important; font-size:20px !important;">${OrderDTO.item_price}</td> --%>
-    <td style="text-align: center !important; font-size:20px !important;">${OrderDTO.od_amount}</td>
-
-    
-    
-   		 <td style="text-align: center !important; font-size:20px !important;">
-   		 <fmt:formatNumber value="${OrderDTO.item_price}" pattern="#,###"></fmt:formatNumber>
-    </td>
-
-     <td style="text-align: center !important; font-size:20px !important;">
-       <fmt:formatNumber value="${OrderDTO.item_price * OrderDTO.od_amount}" pattern="#,###"></fmt:formatNumber>
-     </td>
-       
-   	<td style="text-align: center !important; font-size:20px !important;">${OrderDTO.od_time}</td>
-	
+   	<td style="text-align: center !important; font-size:15px !important;">${OrderDTO.name}</td>
+   	<td style="text-align: center !important; font-size:15px !important;">${OrderDTO.item_name}</td>
+<%--    	<td style="text-align: center !important; font-size:15px !important;">${OrderDTO.item_price}</td> --%>
+    <td style="text-align: center !important; font-size:15px !important;">${OrderDTO.od_amount}</td>
+	<td style="text-align: center !important; font-size:15px !important;"><fmt:formatNumber value="${OrderDTO.item_price}" pattern="#,###"></fmt:formatNumber></td>
+    <td style="text-align: center !important; font-size:15px !important;"><fmt:formatNumber value="${OrderDTO.item_price * OrderDTO.od_amount}" pattern="#,###"></fmt:formatNumber></td>
+   	<td style="text-align: center !important; font-size:15px !important;">${OrderDTO.od_time}</td>
 	<c:if test="${OrderDTO.shipment_not eq 0}">
-      <td style="text-align: center !important; font-size:20px !important; color:red; ">미출하</td>
+      <td style="text-align: center !important; font-size:15px !important; color:red; ">미출하</td>
   	</c:if>
 	<c:if test="${OrderDTO.shipment_not eq 1}">
-		<td style="text-align: center !important; font-size:20px !important; color:green; ">출하완료</td>
+		<td style="text-align: center !important; font-size:15px !important; color:green; ">출하완료</td>
 	</c:if>
-
-
   </tr>
   		</c:forEach>
   
@@ -296,15 +284,15 @@ label input[type=radio]:checked:after{
   		<c:if test="${pageDTO.count ne -1}">
   		
 		<c:if test="${pageDTO.startPage > pageDTO.pageBlock}">
-			<a href="${pageContext.request.contextPath}/emp/order?pageNum=${pageDTO.startPage - pageDTO.pageBlock}">Prev</a>
+			<a href="${pageContext.request.contextPath}/emp/order?pageNum=${pageDTO.startPage - pageDTO.pageBlock}" style="font-size: 20px">Prev</a>
 		</c:if>
 		
 		<c:forEach var="i" begin="${pageDTO.startPage}" end="${pageDTO.endPage}" step="1">
-			<a href="${pageContext.request.contextPath}/emp/order?pageNum=${i}">${i}</a>
+			<a href="${pageContext.request.contextPath}/emp/order?pageNum=${i}" style="font-size: 20px">${i}</a>
 		</c:forEach>
 		
 		<c:if test="${pageDTO.endPage < pageDTO.pageCount}">
-			<a href="${pageContext.request.contextPath}/emp/order?pageNum=${pageDTO.startPage + pageDTO.pageBlock}">Next</a>
+			<a href="${pageContext.request.contextPath}/emp/order?pageNum=${pageDTO.startPage + pageDTO.pageBlock}" style="font-size: 20px">Next</a>
 		</c:if>
 		
 		</c:if>
@@ -313,17 +301,17 @@ label input[type=radio]:checked:after{
 		<c:if test="${pageDTO.count eq -1}">
 		
 		<c:if test="${orderDTO.startPage > orderDTO.pageBlock}">
-			<a href="${pageContext.request.contextPath}/emp/order?pageNum=${orderDTO.startPage - orderDTO.pageBlock}">Prev</a>
+			<a href="${pageContext.request.contextPath}/emp/order?pageNum=${orderDTO.startPage - orderDTO.pageBlock}" style="font-size: 20px">Prev</a>
 		</c:if>
 		
 		<c:forEach var="i" begin="${orderDTO.startPage}" end="${orderDTO.endPage}" step="1">
 			<a href="${pageContext.request.contextPath}/emp/orderSearch?pageNum=${i}&name=${orderDTO.name}
 			&item_name=${orderDTO.item_name}&item_minPrice=${orderDTO.item_minPrice}&item_maxPrice=${orderDTO.item_maxPrice}
-			&od_minTime=${orderDTO.od_minTime}&od_maxTime=${orderDTO.od_maxTime}&shipment_not=${orderDTO.shipment_not}">${i}</a>
+			&od_minTime=${orderDTO.od_minTime}&od_maxTime=${orderDTO.od_maxTime}&shipment_not=${orderDTO.shipment_not}" style="font-size: 20px">${i}</a>
 		</c:forEach>
 		
 		<c:if test="${orderDTO.endPage < orderDTO.pageCount}">
-			<a href="${pageContext.request.contextPath}/emp/order?pageNum=${orderDTO.startPage + orderDTO.pageBlock}">Next</a>
+			<a href="${pageContext.request.contextPath}/emp/order?pageNum=${orderDTO.startPage + orderDTO.pageBlock}" style="font-size: 20px">Next</a>
 		</c:if>
 		
 		</c:if>

@@ -69,7 +69,7 @@ font-size: 16px;
   	</c:if>
 </tr>
 <tr>
-	<th>비밀번호</th><td>${storeDTO.pw}</td>
+	<th>비밀번호</th><td colspan="3">${storeDTO.pw}</td>
 </tr>
 
 <tr>

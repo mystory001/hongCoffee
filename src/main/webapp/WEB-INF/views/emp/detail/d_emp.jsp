@@ -98,16 +98,17 @@ font-size: 16px;
 <tr>
 	
 <c:if test="${sessionScope.emp_right eq 1 }">
-	<th>권한</th><td>
+	<th>권한</th><td colspan="3">
 	<c:if test="${employeeDTO.emp_right eq 1}">관리자</c:if>
    		<c:if test="${employeeDTO.emp_right eq 0}">일반</c:if>
    		</td>
    		</c:if>
-	<c:if test="${sessionScope.emp_right eq 1 }">
-   		<th>비밀번호</th><td>${employeeDTO.emp_pw}</td>
-   		</c:if>
-   		
 </tr>
+<tr>
+	<c:if test="${sessionScope.emp_right eq 1 }">
+   		<th>비밀번호</th><td colspan="3">${employeeDTO.emp_pw}</td>
+   		</c:if>
+</tr>   		
 <tr>
 	<th>적요</th><td colspan="3">${employeeDTO.emp_note}</td>
 </tr>

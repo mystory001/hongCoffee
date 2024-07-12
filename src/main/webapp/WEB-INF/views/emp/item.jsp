@@ -170,7 +170,7 @@ label input[type=radio]:checked:after{
         <div id="settings-trigger"><i class="ti-settings"></i></div>
         <div id="theme-settings" class="settings-panel">
           <i class="settings-close ti-close"></i>
-               <p class="settings-heading">사이드바 색상 및 바로가기</p>
+               <p class="settings-heading">사이드바 색상 변경</p>
           <div class="sidebar-bg-options selected" id="sidebar-light-theme"><div class="img-ss rounded-circle bg-light border mr-3"></div>light</div>
           <div class="sidebar-bg-options" id="sidebar-dark-theme"><div class="img-ss rounded-circle bg-dark border mr-3"></div>dark</div>
           <p class="settings-heading mt-2">헤더 색상</p>
@@ -182,7 +182,7 @@ label input[type=radio]:checked:after{
             <div class="tiles dark"></div>
             <div class="tiles default"></div>
           </div>
-          <button style="background-color: black; color: #EFBDBC;" onclick="location.href='${pageContext.request.contextPath}/store/login'">지점 페이지</button>
+<%--           <button style="background-color: black; color: #EFBDBC;" onclick="location.href='${pageContext.request.contextPath}/store/login'">지점 페이지</button> --%>
         </div>
       </div>
 
@@ -206,7 +206,7 @@ label input[type=radio]:checked:after{
 				<ul>
 					<li><div class="search_div"><label class="search_name"><b>유형</b></label>
 						<select class="choose" name="item_type">
-							<option value="100">-----------------------------------------------</option>
+							<option value="100">유형을 선택해주세요</option>
 							<option value="0">식품</option>
 							<option value="1">비식품</option>
 						</select></div></li>
@@ -245,28 +245,28 @@ label input[type=radio]:checked:after{
  		 </tr>
  		 <c:forEach var="ItemDTO" items="${itemList}">
   <tr onclick="window.open('${pageContext.request.contextPath}/emp/detail/d_item?item_num=${ItemDTO.item_num}','홍커피','width=1500,height=725,top=100, left=200,scrollbars=yes')">
-  <td style="text-align: center !important; font-size:20px !important;" onclick="event.cancelBubble=true"><label for="radio1-true"><input type="radio" name="radio1" id="radio1-true" value="${ItemDTO.item_num}"></label></td>
+  <td style="text-align: center !important; font-size:15px !important;" onclick="event.cancelBubble=true"><label for="radio1-true"><input type="radio" name="radio1" id="radio1-true" value="${ItemDTO.item_num}"></label></td>
   
     	<c:if test="${ItemDTO.item_type eq 0}">
-   	  			<td style="text-align: center !important; font-size:20px !important; color:#4E342E;" >식품</td>
+   	  			<td style="text-align: center !important; font-size:15px !important; color:#4E342E;" >식품</td>
    	  	</c:if>
    	  	 <c:if test="${ItemDTO.item_type eq 1}">
-   	  		<td style="text-align: center !important; font-size:20px !important; color:#FF3D00;">비식품</td>
+   	  		<td style="text-align: center !important; font-size:15px !important; color:#FF3D00;">비식품</td>
    	  	</c:if>
-   	<td style="text-align: center !important; font-size:20px !important;">${ItemDTO.item_name}</td>
+   	<td style="text-align: center !important; font-size:15px !important;">${ItemDTO.item_name}</td>
    	  
    	
    	
-    <td style="text-align: center !important; font-size:20px !important; ">
+    <td style="text-align: center !important; font-size:15px !important; ">
 	<fmt:formatNumber value="${ItemDTO.item_price}" pattern="#,###" />
     </td>
    	
    	
    	<c:if test="${ItemDTO.item_state eq 0}">
-      <td style="text-align: center !important; font-size:20px !important; color:green; ">취급</td>
+      <td style="text-align: center !important; font-size:15px !important; color:green; ">취급</td>
   	</c:if>
   	<c:if test="${ItemDTO.item_state eq 1}">
-      <td style="text-align: center !important; font-size:20px !important; color:red; ">미취급</td>
+      <td style="text-align: center !important; font-size:15px !important; color:red; ">미취급</td>
   	</c:if>
  
  
@@ -277,24 +277,24 @@ label input[type=radio]:checked:after{
  		 
  <div id="page_control">
 		<c:if test="${pageDTO.startPage > pageDTO.pageBlock}">
-			<a href="${pageContext.request.contextPath}/emp/item?pageNum=${pageDTO.startPage - pageDTO.pageBlock}">Prev</a>
+			<a href="${pageContext.request.contextPath}/emp/item?pageNum=${pageDTO.startPage - pageDTO.pageBlock}" style="font-size: 20px">Prev</a>
 		</c:if>
 		
 		<c:if test="${pageDTO.count ne -1}">
 		<c:forEach var="i" begin="${pageDTO.startPage}" end="${pageDTO.endPage}" step="1">
-			<a href="${pageContext.request.contextPath}/emp/item?pageNum=${i}">${i}</a>
+			<a href="${pageContext.request.contextPath}/emp/item?pageNum=${i}" style="font-size: 20px">${i}</a>
 		</c:forEach>
 		</c:if>
 		
 		<c:if test="${pageDTO.count eq -1}">
 		<c:forEach var="i" begin="${itemDTO.startPage}" end="${itemDTO.endPage}" step="1">
 			<a href="${pageContext.request.contextPath}/emp/itemSearch?pageNum=${i}&item_name=${itemDTO.item_name}&item_type=${itemDTO.item_type}
-			&item_minPrice=${itemDTO.item_minPrice}&item_maxPrice=${itemDTO.item_maxPrice}">${i}</a>
+			&item_minPrice=${itemDTO.item_minPrice}&item_maxPrice=${itemDTO.item_maxPrice}" style="font-size: 20px">${i}</a>
 		</c:forEach>
 		</c:if>
 
 		<c:if test="${pageDTO.endPage < pageDTO.pageCount}">
-			<a href="${pageContext.request.contextPath}/emp/item?pageNum=${pageDTO.startPage + pageDTO.pageBlock}">Next</a>
+			<a href="${pageContext.request.contextPath}/emp/item?pageNum=${pageDTO.startPage + pageDTO.pageBlock}" style="font-size: 20px">Next</a>
 		</c:if>
 
 		</div>
