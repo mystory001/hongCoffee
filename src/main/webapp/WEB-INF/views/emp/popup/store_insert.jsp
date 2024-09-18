@@ -62,8 +62,16 @@ select{
 <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
 <script>
 var isPopupOpened = false; 
+var postcodePopup;
 
 function sample4_execDaumPostcode() {
+	
+	if (postcodePopup) {
+        // 팝업이 이미 열려 있다면, 포커스
+        postcodePopup.focus();
+        return;
+    }
+	
 	
     if (isPopupOpened) {
         return;
@@ -77,7 +85,7 @@ function sample4_execDaumPostcode() {
                 // 내려오는 변수가 값이 없는 경우엔 공백('')값을 가지므로, 이를 참고하여 분기 한다.
                 var roadAddr = data.roadAddress; // 도로명 주소 변수
                 var extraRoadAddr = ''; // 참고 항목 변수
-
+                
                 // 법정동명이 있을 경우 추가한다. (법정리는 제외)
                 // 법정동의 경우 마지막 문자가 "동/로/가"로 끝난다.
                 if(data.bname !== '' && /[동|로|가]$/g.test(data.bname)){
@@ -119,12 +127,19 @@ function sample4_execDaumPostcode() {
                     guideTextBox.innerHTML = '';
                     guideTextBox.style.display = 'none';
                 }
-            }
+                
+            },
+            width: 600, // 팝업의 너비
+            height: 400, // 팝업의 높이
+            left: (window.screen.width / 2) - (600 / 2), // 팝업을 오른쪽으로 이동
+            top: 100 // 팝업의 높이 위치 (조정 가능)
 
         }).open();
         
-        isPopupOpened = true;
+//         isPopupOpened = true;
+        isPopupOpened = false;
     }
+    
     
     //===========================================================
     	
