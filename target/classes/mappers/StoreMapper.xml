@@ -7,12 +7,10 @@
 <!--        => boardMapper 파일 => xml 파일이름  -->
 <mapper namespace="com.itwillbs.mappers.StoreMapper">
 
-
 	<select id="userCheck" resultType="com.itwillbs.domain.StoreDTO">
 		select * from store
 		where num = #{num} and pw = #{pw}
 	</select>
-	
 	
 	<select id="getItemList" resultType="com.itwillbs.domain.ItemDTO"> 
  		select item_num, item_name, item_type, item_price, item_state, item_note
@@ -20,7 +18,6 @@
  		order by item_state, item_type, item_num
  		limit #{startRow}, #{pageSize}
  	</select>
- 	
  	
  	<select id="searchItemList" resultType="com.itwillbs.domain.ItemDTO">
 		select item_num, item_name, item_type, item_price, item_state, item_note from item
@@ -45,7 +42,6 @@
 		limit #{startRow}, #{pageSize}
 	</select>
 
-
 	<select id="getStockList" resultType="com.itwillbs.domain.StockDTO"> 
  		select s.stock_num, t.item_type, t.item_name, t.item_price, s.amount, t.item_state
  		from stock s join item t on s.item_num = t.item_num
@@ -53,7 +49,6 @@
  		order by t.item_state, t.item_type, t.item_num
  		limit #{startRow},#{pageSize}
  	</select>
- 	
  	
  	<select id="searchStockList" resultType="com.itwillbs.domain.StockDTO">
 		select s.stock_num, t.item_type, t.item_name, t.item_price, s.amount, t.item_state
@@ -83,7 +78,6 @@
 		limit #{startRow}, #{pageSize}
 	</select>
 
-
 	<select id="getOrderList" resultType="com.itwillbs.domain.OrderDTO"> 
  		select o.od_num,t.item_name, o.od_amount, t.item_price, o.od_time, o.shipment_not, o.received_not, s.name 
  		from `order` o join item t on o.item_num = t.item_num
@@ -92,7 +86,6 @@
  		order by o.shipment_not, o.received_not, o.od_time desc
  		limit #{startRow}, #{pageSize}
  	</select>
- 	
  	
  	<select id="searchOrderList" resultType="com.itwillbs.domain.OrderDTO">
  		select o.od_num,t.item_name, o.od_amount, t.item_price, o.od_time, o.shipment_not, o.received_not, s.name 
@@ -123,7 +116,6 @@
  		limit #{startRow}, #{pageSize}
  	</select>
  	
- 	
  	<select id="getReceiveList" resultType="com.itwillbs.domain.ReceiveDTO"> 
 		select r.od_num, t.item_name, r.rc_amount, t.item_price, r.rc_time, r.pay
 		from receive r join item t on r.item_num = t.item_num
@@ -131,7 +123,6 @@
 		order by r.rc_time desc
 		limit #{startRow},#{pageSize}
  	</select>
- 	
  	
  	<select id="searchReceiveList" resultType="com.itwillbs.domain.ReceiveDTO">
   		select r.od_num, t.item_name, r.rc_amount, t.item_price, r.rc_time, r.pay
@@ -160,7 +151,6 @@
   		order by r.rc_time desc
 		limit #{startRow},#{pageSize}
 	</select>
-
 
  	<select id="getConsumeList" resultType="com.itwillbs.domain.ResultDTO"> 
 		select r.rs_num, r.stock_num, r.rs_date, i.item_name, r.consume, i.item_price
@@ -243,7 +233,6 @@
  		where od_num = #{od_num}
  	</select>
 
-
 	<select id="searchConsumeList" resultType="com.itwillbs.domain.ResultDTO">
  		select r.rs_date, i.item_name, r.consume, i.item_price
 		from result r join stock s on r.stock_num = s.stock_num
@@ -261,7 +250,6 @@
 		limit #{startRow}, #{pageSize}
  	</select>
 
-
     <select id="getSellList" resultType="com.itwillbs.domain.ResultDTO"> 
 	    select r.rs_num, r.rs_date , p.prod_name, r.sales, p.prod_price
         from result r join product p on r.prod_num = p.prod_num
@@ -269,7 +257,6 @@
         order by r.rs_date desc
         limit #{startRow}, #{pageSize} 
 	</select>
-
  	
  	<select id="searchSellList" resultType="com.itwillbs.domain.ResultDTO">
  		select r.rs_date , p.prod_name, r.sales, p.prod_price
@@ -287,7 +274,6 @@
         limit #{startRow}, #{pageSize}  
  	</select>
  	
- 	
  	<select id="getResultList" resultType="com.itwillbs.domain.ResultDTO"> 
 		select r.rs_date "rs_date", sum(ifnull(r.sales*p.prod_price, 0)) "maechul", sum(ifnull(r.consume*i.item_price, 0)) "jichul", (sum(ifnull(r.sales*p.prod_price, 0)))-(sum(ifnull(r.consume*i.item_price, 0))) "income"
 		from result r left join product p
@@ -299,7 +285,6 @@
 		order by r.rs_date desc
 		limit #{startRow}, #{pageSize}
  	</select>
- 	
  	
  	<select id="searchResultList" resultType="com.itwillbs.domain.ResultDTO">
  		select r.rs_date "rs_date", sum(ifnull(r.sales*p.prod_price, 0)) "maechul", sum(ifnull(r.consume*i.item_price, 0)) "jichul", (sum(ifnull(r.sales*p.prod_price, 0)))-(sum(ifnull(r.consume*i.item_price, 0))) "income"
@@ -318,7 +303,6 @@
  		order by r.rs_date desc
  		limit #{startRow}, #{pageSize}
  	</select>
- 	
 
  	<select id="getStock6" resultType="com.itwillbs.domain.StockDTO">
  		select i.item_name, s.amount
@@ -373,7 +357,6 @@
         where rs_num = #{rs_num};
 	</select>
 
-
 	<update id="consumeUpdate">
 		update result
 		set consume = #{consume}
@@ -389,7 +372,6 @@
 	<insert id="sellInsert">
 		insert into result(num, prod_num, rs_date, sales)
 		values(#{num}, #{prod_num}, #{rs_date}, #{sales})
-
 	</insert>
 	
 	<update id="stockIncrease">
@@ -444,11 +426,7 @@
 		rc_time &lt;= concat(#{year}, '-', (#{month}), '-', 20)
 		</if>
 		</where>
-
 	</update>
-
- 		
-
  	
  	<select id="getStockCountS" resultType="java.lang.Integer"> 
  		select count(*) from stock s join item t
@@ -500,7 +478,6 @@
     			and o.received_not = #{received_not}
     		</if>
  		</where>
- 		
  	</select>
  	
  	<select id="getReceiveCountR" resultType="java.lang.Integer"> 
@@ -572,12 +549,11 @@
  		</where>
  	</select>
  	
- 	
  	<select id="getItemCount" resultType="java.lang.Integer"> 
  		select count(*) from item
  	</select>
 
-<select id="getItemCountI" resultType="java.lang.Integer"> 
+	<select id="getItemCountI" resultType="java.lang.Integer"> 
  		select count(*) from item
  		<where>
 			<if test="item_type != 100">
@@ -598,24 +574,16 @@
 		</where>
  	</select>
 
-
      <select id="getStockCount" resultType="java.lang.Integer"> 
  		select count(*) from stock
  		where num = #{num}
  	</select>
-
-
 
 	<select id="getAmount" resultType="java.lang.Integer">
 		select amount
 		from stock
 		where stock_num = #{stock_num}
 	</select>
-	
-	
-	
-	
-	
 
      <select id="getOrderCount" resultType="java.lang.Integer"> 
  		select count(*) from `order`

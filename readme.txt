@@ -12,3 +12,7 @@
 - 테이블 정의서 : https://docs.google.com/spreadsheets/d/1xPxV9WYMYDO7SMseCbuNDLjo6G0l7oQ3bCNHhv3A6Kw/edit?gid=0#gid=0
 - ERD : https://drive.google.com/file/d/1q-Yd8uxrzMBNUBG2y8S3Uu52u84-QIGU/view
 =======================================================================================================
+241212
+1. 코드 주석 추가
+2. 코드 들여쓰기 적용
+3. 불필요한 import 제거 => 불필요한 의존성 증가로 빌드 시간이나 실행 시간 증가 + pmd에서 변수명 제외하고 보안 취약점으로 나타남

@@ -18,11 +18,9 @@
  		limit #{startRow},#{pageSize} 
  		
  	</select>
- 	
 
  	<select id="searchStoreList" resultType="com.itwillbs.domain.StoreDTO">
  		select * from store 
- 	
  		<where>
  		<if test="name != ''">
  			name like concat ('%', #{name}, '%')
@@ -43,7 +41,6 @@
  		order by num desc
  		limit #{startRow},#{pageSize}
  	</select>
- 	
 
  	<select id="getItemList" resultType="com.itwillbs.domain.ItemDTO"> 
  		select * from item 
@@ -183,7 +180,6 @@
  	<select id="getEmpList" resultType="com.itwillbs.domain.EmployeeDTO"> 
  		select * from employee limit #{startRow},#{pageSize}
  	</select>
- 	
 
  	<insert id="storeInsert">
  		insert into store(num, pw, name, boss, phone, tel, email, address, address_detail, postalcode, note, state)
@@ -201,20 +197,19 @@
  		values(#{emp_num}, #{emp_pw}, #{emp_name}, #{emp_phone}, #{emp_email}, #{emp_birth}, #{emp_dept}, #{emp_rank}, #{emp_right}, #{hire_date}, #{emp_note})
  	</insert>
  	
-<!--  	관리자가 변경 -->
+ 	<!-- 관리자가 변경 -->
  	<update id="employeeUpdate1">
  		update employee
  		set emp_pw = #{emp_pw}, emp_name = #{emp_name}, emp_birth = #{emp_birth}, emp_dept = #{emp_dept}, emp_rank = #{emp_rank}, emp_right = #{emp_right}, emp_phone = #{emp_phone}, emp_email = #{emp_email}, hire_date = #{hire_date}, emp_state = #{emp_state}, emp_note = #{emp_note}
  		where emp_num = #{emp_num}
  	</update>
 
-<!-- 	사원이 변경 	 -->
+	<!-- 사원이 변경 --> 	
  	<update id="employeeUpdate">
 		update employee
  		set emp_pw = #{emp_pw}, emp_name = #{emp_name}, emp_phone = #{emp_phone}, emp_email = #{emp_email}
  		where emp_num = #{emp_num}
  	</update>
- 	
  	
  	<select id="getStore" resultType="com.itwillbs.domain.StoreDTO">
  		select * from store
@@ -286,7 +281,8 @@
  	<select id="getEmployee" resultType="com.itwillbs.domain.EmployeeDTO">
  		select * from employee
  		where emp_num = #{emp_num}
-</select>
+	</select>
+
  	<select id="searchEmpList" resultType="com.itwillbs.domain.EmployeeDTO"> 
  		select * from employee 
  		<where>
@@ -363,17 +359,16 @@
 			</if>
 		</if>
 		</where>
- 		
  	</select>
  	
  	<select id="getItemCount" resultType="java.lang.Integer"> 
  		select count(*) from item  
  	</select>
  	
- 	
  	<select id="getOrderCount" resultType="java.lang.Integer"> 
  		select count(*) from `order`  
  	</select>
+
  	<select id="getOrderCountO" resultType="java.lang.Integer"> 
  		select count(*) from `order` o join store s on o.num = s.num
  		join item i on o.item_num = i.item_num
@@ -405,7 +400,6 @@
  	<select id="getReceiveCountR" resultType="java.lang.Integer"> 
  		select count(*) from receive r 
  		join `order` o on o.od_num = r.rc_amount
- 		
  		<where>
  			<if test="name != ''">
      			s.name like concat('%', #{name}, '%')
@@ -426,10 +420,7 @@
     			and o.received_not = #{received_not}
     		</if>
  		</where>
- 		
  	</select>
- 	
- 	
  	
  	<select id="getShipmentCount" resultType="java.lang.Integer"> 
  		select count(*) from  shipment 
@@ -488,7 +479,6 @@
  		select count(*) from  employee 
  	</select>
 
-
     <select id="getTop5" resultType="com.itwillbs.domain.SalesDTO">
  		select s.name, sum((r.sales*p.prod_price)) "maechul"
 		from result r left join product p
@@ -498,16 +488,6 @@
 		group by s.name
 		order by 2 desc
 		limit 5
-		
-<!--  		select s.name, format(sum(r.sales*p.prod_price),0) "maechul" -->
-<!-- 		from result r left join product p -->
-<!-- 		on r.prod_num = p.prod_num -->
-<!-- 		left join store s on r.num = s.num -->
-<!-- 		where r.rs_date = DATE_SUB('2024-03-21', INTERVAL 1 DAY) -->
-<!-- 		group by s.name -->
-<!-- 		order by 2 desc -->
-<!-- 		limit 5 -->
-		
  	</select>
  	
  	<update id="shipmentStateReset">
@@ -516,7 +496,4 @@
  		where od_num = #{od_num}
  	</update>
  	
- 	
- 	
-
 </mapper>
